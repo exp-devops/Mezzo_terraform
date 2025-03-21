@@ -16,3 +16,7 @@ subnet_cidr = {
   "SUBNET_03" = ["10.1.2.0/24"]
   "SUBNET_04" = ["10.1.3.0/24"]
 }
+#mssql
+version = 15.0
+max_size_gb = 10
+sql_sku_name = "HS_Gen5_2"

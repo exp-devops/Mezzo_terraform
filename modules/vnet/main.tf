@@ -105,4 +105,4 @@ resource "azurerm_subnet_nat_gateway_association" "private_subnet2_natgw" {
   subnet_id      = azurerm_subnet.tf_private_zone2.id
   nat_gateway_id = azurerm_nat_gateway.tf_azurerm_nat_gateway2.id
 }
- 
+

@@ -10,18 +10,12 @@ variable "location" {
 variable "tags" {
   
 }
-#vnet
-variable "vnet_address_space" {
+variable "rg_mezzo" {
   
 }
-variable "subnet_cidr" {
+variable "privatesubet1_id" {
   
 }
-#mssql
-
-variable "max_size_gb" {
-  
-}
-variable "sql_sku_name" {
+variable "vnet_id" {
   
 }
