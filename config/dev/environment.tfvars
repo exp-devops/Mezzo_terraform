@@ -20,3 +20,11 @@ subnet_cidr = {
 version = 15.0
 max_size_gb = 10
 sql_sku_name = "HS_Gen5_2"
+
+#aks
+nodepool1-maxcount = 3
+nodepool1-mincount = 2
+kubernetes_version = "1.30.10"
+vm_size = "Standard_DS2_v2"
+aks_sku_tier = "Standard"
+

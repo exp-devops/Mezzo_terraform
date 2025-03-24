@@ -10,26 +10,17 @@ variable "location" {
 variable "tags" {
   
 }
-#vnet
-variable "vnet_address_space" {
+variable "rg_mezzo" {
   
 }
-variable "subnet_cidr" {
-  
-}
-#mssql
 
-variable "max_size_gb" {
-  
-}
-variable "sql_sku_name" {
-  
-}
-#aks
 variable "kubernetes_version" {
   
 }
 variable "aks_sku_tier" {
+  
+}
+variable "vm_size" {
   
 }
 variable "nodepool1-mincount" {
@@ -38,7 +29,9 @@ variable "nodepool1-mincount" {
 variable "nodepool1-maxcount" {
   
 }
-variable "vm_size" {
+variable "privatesubet1_id" {
   
 }
-
+variable "acr_id" {
+  
+}

@@ -3,7 +3,7 @@ locals {
 }
 
 resource "azurerm_container_registry" "container_registry" {
-  name                = "${var.project_name}${var.project_environment}acr"
+  name                = "${var.project_name}${var.project_environment}projectacr"
   resource_group_name = var.rg_mezzo
   location            = var.location
   sku                 = "Premium"
