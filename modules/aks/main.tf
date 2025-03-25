@@ -1,7 +1,7 @@
 locals {
   common_tags             = var.tags
 }
-
+/*
 resource "azurerm_log_analytics_workspace" "aks" {
   name                = "${var.project_name}-${var.project_environment}-log-analytics"
   location            = var.location
@@ -9,7 +9,7 @@ resource "azurerm_log_analytics_workspace" "aks" {
   sku                 = "PerGB2018"
   retention_in_days   = 30
 }
-
+*/
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "${var.project_name}-${var.project_environment}-aks-cluster"
   location            = var.location
@@ -31,21 +31,25 @@ resource "azurerm_kubernetes_cluster" "aks" {
     min_count           = var.nodepool1-mincount
     max_count           = var.nodepool1-maxcount
     vnet_subnet_id      = var.privatesubet1_id
+    
     node_labels = {
       environment = "dev"
     }
     upgrade_settings {
       max_surge = "33%"
     }
+    
   }
-
+  
   identity {
     type = "SystemAssigned"
   }
 
   azure_active_directory_role_based_access_control {
     managed            = true
+    tenant_id          = "05cb6afc-e5de-470e-ad06-4a5b08adfcd8"
     azure_rbac_enabled = true
+
   }
 
     network_profile {
@@ -59,7 +63,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }*/
 
   oms_agent {
-    log_analytics_workspace_id = azurerm_log_analytics_workspace.aks.id
+    log_analytics_workspace_id = var.log_analytics_workspace
   }
 
   key_vault_secrets_provider {
@@ -119,4 +123,4 @@ resource "azurerm_monitor_action_group" "aks_alerts" {
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-aks-alert-ag"}
   )
   
-}
+}*/

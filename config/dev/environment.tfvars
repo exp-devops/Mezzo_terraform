@@ -28,3 +28,8 @@ kubernetes_version = "1.30.10"
 vm_size = "Standard_DS2_v2"
 aks_sku_tier = "Standard"
 
+static_web_app_sku_tier = "Standard"
+
+workspace_sku = "PerGB2018"
+retention_in_days = 30
+

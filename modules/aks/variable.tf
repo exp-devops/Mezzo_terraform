@@ -35,3 +35,6 @@ variable "privatesubet1_id" {
 variable "acr_id" {
   
 }
+variable "log_analytics_workspace" {
+  
+}

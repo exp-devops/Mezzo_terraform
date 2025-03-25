@@ -41,4 +41,16 @@ variable "nodepool1-maxcount" {
 variable "vm_size" {
   
 }
+#static webapp
+variable "static_web_app_sku_tier" {
+  
+}
+#applicationinsight
+
+variable "retention_in_days" {
+  
+}
+variable "workspace_sku" {
+  
+}
 

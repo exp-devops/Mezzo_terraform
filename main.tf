@@ -66,7 +66,30 @@ module "aks" {
   kubernetes_version = var.kubernetes_version
   vm_size = var.vm_size
   aks_sku_tier = var.aks_sku_tier
+  log_analytics_workspace = module.applicationinsights.log_analytics_workspace
 }
 
+module "staticwebapps"{
+  source = "./modules/staticwebapps"
+  project_name = var.project_name
+  project_environment = var.project_environment
+  location = var.location
+  rg_mezzo = module.rg.rg_mezzo
+  tags = var.tags 
+  static_web_app_sku_tier = var.static_web_app_sku_tier
+
+}
+
+module "applicationinsights"{
+  source = "./modules/applicationinsights"
+  project_name = var.project_name
+  project_environment = var.project_environment
+  location = var.location
+  rg_mezzo = module.rg.rg_mezzo
+  tags = var.tags 
+  workspace_sku = var.workspace_sku
+  retention_in_days = var.retention_in_days
+
+}
 
 
