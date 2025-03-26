@@ -1,3 +1,4 @@
+# Modules for Resource Group
 module "rg" {
   source = "./modules/rg"
   project_name = var.project_name
@@ -5,7 +6,7 @@ module "rg" {
   location = var.location
   tags = var.tags
 }
-
+# Modules for Virtual Network
 module "vnet" {
   source = "./modules/vnet"
   project_name = var.project_name
@@ -16,7 +17,7 @@ module "vnet" {
   subnet_cidr = var.subnet_cidr
   tags = var.tags 
 }
-
+# Modules for Key Vault
 module "keyvault" {
   source = "./modules/keyvault"
   project_name = var.project_name
@@ -25,7 +26,7 @@ module "keyvault" {
   rg_mezzo = module.rg.rg_mezzo
   tags = var.tags 
 }
-
+# Modules for MS SQL
 module "mssql" {
   source = "./modules/mssql"
   project_name = var.project_name
@@ -40,7 +41,7 @@ module "mssql" {
   privatesubet1_id = module.vnet.privatesubet1_id
 }
 
-
+# Modules for ACR
 module "acr" {
  source = "./modules/acr"
   project_name = var.project_name
@@ -52,6 +53,7 @@ module "acr" {
   privatesubet1_id = module.vnet.privatesubet1_id
 }
 
+# Modules for AKS
 module "aks" {
  source = "./modules/aks"
  project_name = var.project_name
@@ -69,6 +71,7 @@ module "aks" {
   log_analytics_workspace = module.applicationinsights.log_analytics_workspace
 }
 
+# Modules for Static Web App
 module "staticwebapps"{
   source = "./modules/staticwebapps"
   project_name = var.project_name
@@ -80,6 +83,7 @@ module "staticwebapps"{
 
 }
 
+# Modules for Application Insights
 module "applicationinsights"{
   source = "./modules/applicationinsights"
   project_name = var.project_name
@@ -92,4 +96,26 @@ module "applicationinsights"{
 
 }
 
+# Modules for Front Door
+module "frontdoor"{
+  source = "./modules/frontdoor"
+  project_name = var.project_name
+  project_environment = var.project_environment
+  location = var.location
+  rg_mezzo = module.rg.rg_mezzo
+  tags = var.tags 
+  static_web_app_url_admin = module.staticwebapps.static_web_app_url_admin
+  static_web_app_url_borrower = module.staticwebapps.static_web_app_url_borrower
+  appgw_public_ip = module.applicationgateway.appgw_public_ip
+}
+
+# Modules for Application Gateway
+module "applicationgateway" {
+  source = "./modules/applicationgateway"
+  project_name =var.project_name
+  project_environment = var.project_environment
+   location = var.location
+  rg_mezzo = module.rg.rg_mezzo
+  publicsubet1_id = module.vnet.publicsubet1_id
+}
 

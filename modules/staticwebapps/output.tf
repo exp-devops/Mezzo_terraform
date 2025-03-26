@@ -10,7 +10,7 @@ output "static_web_app_deployment_token_admin" {
 }
 
 # Output Static Web App URL
-output "static_web_app_url_borrow" {
+output "static_web_app_url_borrower" {
   value = azurerm_static_site.tf_borrow_webapp.default_host_name
 }
 

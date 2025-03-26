@@ -1,3 +1,4 @@
+#------General variables----
 variable "project_name" {
   
 }
@@ -10,7 +11,7 @@ variable "location" {
 variable "tags" {
   
 }
-#vnet
+#------vnet------
 variable "vnet_address_space" {
   
 }
@@ -25,7 +26,7 @@ variable "max_size_gb" {
 variable "sql_sku_name" {
   
 }
-#aks
+#-------aks-------
 variable "kubernetes_version" {
   
 }
@@ -41,11 +42,11 @@ variable "nodepool1-maxcount" {
 variable "vm_size" {
   
 }
-#static webapp
+#-------static webapp-------
 variable "static_web_app_sku_tier" {
   
 }
-#applicationinsight
+#-------applicationinsight-----
 
 variable "retention_in_days" {
   
@@ -53,4 +54,5 @@ variable "retention_in_days" {
 variable "workspace_sku" {
   
 }
+
 

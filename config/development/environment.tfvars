@@ -3,9 +3,9 @@ project_environment    = "dev"
 location               = "eastus2"
 
 tags = {
-  "Project"     = "mezzo"
-  "Environment" = "dev"
-  "Description" = "By Terraform"
+  "Project"            = "mezzo"
+  "Environment"        = "dev"
+  "Description"        = "By Terraform"
   "Product"     = "mezzo"
 }
 #vnet
