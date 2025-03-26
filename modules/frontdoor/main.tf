@@ -10,7 +10,7 @@ tags = merge(
   )
 }
  
-# 🔒 WEB APPLICATION FIREWALL (WAF) POLICY
+# WEB APPLICATION FIREWALL (WAF) POLICY
 resource "azurerm_cdn_frontdoor_firewall_policy" "waf_policy" {
 name                      = "${var.project_name}${var.project_environment}wafpolicy"
 resource_group_name       = var.rg_mezzo
@@ -80,7 +80,7 @@ tags = merge(
   )
 }
  
-# 🎯 ORIGIN GROUP (Backend for Front Door)
+#  ORIGIN GROUP (Backend for Front Door)
 
 resource "azurerm_cdn_frontdoor_origin_group" "origin-group-admin" {
   name                                = "${var.project_name}-${var.project_environment}-admin-origin-group"
@@ -100,7 +100,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-admin" {
   
 }
  
-# 🔗 ORIGIN (Backend Web App or API)
+# ORIGIN (Backend Web App or API)
 
 resource "azurerm_cdn_frontdoor_origin" "origin-admin" {
   name                                 = "${var.project_name}-${var.project_environment}-admin-origin"
@@ -114,7 +114,7 @@ resource "azurerm_cdn_frontdoor_origin" "origin-admin" {
 
 }
  
-# 🚦 FRONT DOOR ROUTE CONFIGURATION
+# FRONT DOOR ROUTE CONFIGURATION
 
 resource "azurerm_cdn_frontdoor_route" "route-admin" {
   name                                 = "${var.project_name}-${var.project_environment}-admin-route"
@@ -180,7 +180,7 @@ tags = merge(
   )
 }
  
-# 🎯 ORIGIN GROUP (Backend for Front Door)
+# ORIGIN GROUP (Backend for Front Door)
 
 resource "azurerm_cdn_frontdoor_origin_group" "origin-group-borrower" {
   name                                = "${var.project_name}-${var.project_environment}-borrower-origin-group"
@@ -200,7 +200,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-borrower" {
   
 }
  
-# 🔗 ORIGIN (Backend Web App or API)
+#  ORIGIN (Backend Web App or API)
 
 resource "azurerm_cdn_frontdoor_origin" "origin-borrower" {
   name                                 = "${var.project_name}-${var.project_environment}-borrower-origin"
@@ -214,7 +214,7 @@ resource "azurerm_cdn_frontdoor_origin" "origin-borrower" {
 
 }
  
-# 🚦 FRONT DOOR ROUTE CONFIGURATION
+# FRONT DOOR ROUTE CONFIGURATION
 
 resource "azurerm_cdn_frontdoor_route" "route-borrower" {
   name                                 = "${var.project_name}-${var.project_environment}-borrower-route"
@@ -280,7 +280,7 @@ tags = merge(
   )
 }
  
-# 🎯 ORIGIN GROUP (Backend for Front Door)
+# ORIGIN GROUP (Backend for Front Door)
 
 resource "azurerm_cdn_frontdoor_origin_group" "origin-group-appgw" {
   name                                = "${var.project_name}-${var.project_environment}-appgw-origin-group"
@@ -300,7 +300,7 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-appgw" {
   
 }
  
-# 🔗 ORIGIN (Backend Web App or API)
+#  ORIGIN (Backend Web App or API)
 
 resource "azurerm_cdn_frontdoor_origin" "origin-appgw" {
   name                                 = "${var.project_name}-${var.project_environment}-appgw-origin"
@@ -314,7 +314,7 @@ resource "azurerm_cdn_frontdoor_origin" "origin-appgw" {
 
 }
  
-# 🚦 FRONT DOOR ROUTE CONFIGURATION
+#  FRONT DOOR ROUTE CONFIGURATION
 
 resource "azurerm_cdn_frontdoor_route" "route-appgw" {
   name                                 = "${var.project_name}-${var.project_environment}-appgw-route"
