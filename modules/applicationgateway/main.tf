@@ -31,7 +31,7 @@ resource "azurerm_application_gateway" "appgw" {
     name = "${var.project_name}-${var.project_environment}-appgw-frontend-port"
     port = 80
   }
-  # 🔹 Add a Backend Target (Example: Web App or VM IP)
+  #  Add a Backend Target (Example: Web App or VM IP)
   backend_address_pool {
     name = "${var.project_name}-${var.project_environment}-appgw-backend-pool"
     fqdns = ["mybackendapp.azurewebsites.net"]  # Add your backend web app or VM
