@@ -13,7 +13,7 @@ variable "tags" {
 variable "rg_mezzo" {
   
 }
-variable "privatesubet1_id" {
+variable "privatesubnet1_id" {
   
 }
 variable "vnet_id" {

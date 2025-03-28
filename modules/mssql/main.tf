@@ -48,7 +48,7 @@ resource "azurerm_private_endpoint" "sql_private_endpoint" {
   location            = var.location
   resource_group_name = var.rg_mezzo
  
-  subnet_id           = var.privatesubet1_id
+  subnet_id           = var.privatesubnet1_id
 
   private_service_connection {
     name                           = "${var.project_name}-${var.project_environment}-sql-priv-connection"

@@ -17,6 +17,18 @@ module "vnet" {
   subnet_cidr = var.subnet_cidr
   tags = var.tags 
 }
+module "acr" {
+ source = "./modules/acr"
+  project_name = var.project_name
+  project_environment = var.project_environment
+  location = var.location
+  rg_mezzo = module.rg.rg_mezzo
+  tags = var.tags 
+  vnet_id = module.vnet.vnet_id
+  privatesubnet1_id = module.vnet.privatesubnet1_id
+}
+
+/*
 # Modules for Key Vault
 module "keyvault" {
   source = "./modules/keyvault"
@@ -38,7 +50,7 @@ module "mssql" {
   max_size_gb = var.max_size_gb
   sql_sku_name = var.sql_sku_name
   vnet_id = module.vnet.vnet_id
-  privatesubet1_id = module.vnet.privatesubet1_id
+  privatesubnet1_id = module.vnet.privatesubnet1_id
 }
 
 # Modules for ACR
@@ -50,17 +62,28 @@ module "acr" {
   rg_mezzo = module.rg.rg_mezzo
   tags = var.tags 
   vnet_id = module.vnet.vnet_id
-  privatesubet1_id = module.vnet.privatesubet1_id
+  privatesubnet1_id = module.vnet.privatesubnet1_id
 }
+/*
+module "applicationgateway" {
+  source = "./modules/applicationgateway"
+  project_name =var.project_name
+  project_environment = var.project_environment
+   location = var.location
+  rg_mezzo = module.rg.rg_mezzo
+  publicsubnet1_id = module.vnet.publicsubnet1_id
+  agic_dependency = module.aks.agic_extension
+  
+}*/
 
 # Modules for AKS
+/*
 module "aks" {
  source = "./modules/aks"
  project_name = var.project_name
   project_environment = var.project_environment
   location = var.location
   rg_mezzo = module.rg.rg_mezzo
-  privatesubet1_id = module.vnet.privatesubet1_id
   tags = var.tags 
   nodepool1-maxcount = var.nodepool1-maxcount
   nodepool1-mincount = var.nodepool1-mincount
@@ -69,6 +92,12 @@ module "aks" {
   vm_size = var.vm_size
   aks_sku_tier = var.aks_sku_tier
   log_analytics_workspace = module.applicationinsights.log_analytics_workspace
+  appgw_name = module.applicationgateway.appgw_name
+  tenant_id = var.tenant_id
+  subscription_id = var.subscription_id
+  privatesubnet1_id = module.vnet.privatesubnet1_id
+
+
 }
 
 # Modules for Static Web App
@@ -106,16 +135,37 @@ module "frontdoor"{
   tags = var.tags 
   static_web_app_url_admin = module.staticwebapps.static_web_app_url_admin
   static_web_app_url_borrower = module.staticwebapps.static_web_app_url_borrower
-  appgw_public_ip = module.applicationgateway.appgw_public_ip
+  appgw_public_ip = module.aks_appgw.appgw_public_ip
 }
 
-# Modules for Application Gateway
-module "applicationgateway" {
-  source = "./modules/applicationgateway"
+
+
+module "elasticsearch" {
+
+  source = "./modules/elasticsearch"
   project_name =var.project_name
   project_environment = var.project_environment
    location = var.location
+  rg_mezzo = module.rg.rg_mezzo  
+}*/
+
+module "aks_appgw" {
+  source = "./modules/aks_appgw"
+  project_name = var.project_name
+  project_environment = var.project_environment
+  location = var.location
   rg_mezzo = module.rg.rg_mezzo
-  publicsubet1_id = module.vnet.publicsubet1_id
+  tags = var.tags 
+  nodepool1-maxcount = var.nodepool1-maxcount
+  nodepool1-mincount = var.nodepool1-mincount
+  acr_id = module.acr.acr_id
+  kubernetes_version = var.kubernetes_version
+  vm_size = var.vm_size
+  aks_sku_tier = var.aks_sku_tier
+  #og_analytics_workspace = module.applicationinsights.log_analytics_workspace
+   tenant_id = var.tenant_id
+  subscription_id = var.subscription_id
+  privatesubnet1_id = module.vnet.privatesubnet1_id
+  publicsubnet1_id = module.vnet.publicsubnet1_id
 }
 

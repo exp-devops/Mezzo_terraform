@@ -11,6 +11,8 @@ variable "rg_mezzo" {
 variable "location" {
   
 }
-variable "publicsubet1_id" {
+
+variable "publicsubnet1_id" {
   
 }
+variable "agic_dependency" {}

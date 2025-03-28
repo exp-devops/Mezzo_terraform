@@ -11,14 +11,13 @@ resource "azurerm_container_registry" "container_registry" {
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-acr"}
   )
-
 }
 
 resource "azurerm_private_endpoint" "acr_private_endpoint" {
   name                = "${var.project_name}-${var.project_environment}-acr-private-endpoint"
   location            = var.location
   resource_group_name = var.rg_mezzo
-  subnet_id           = var.privatesubet1_id  # Replace with a private subnet
+  subnet_id           = var.privatesubnet1_id  # Replace with a private subnet
  
   private_service_connection {
     name                           = "${var.project_name}-${var.project_environment}-acr-private-connection"

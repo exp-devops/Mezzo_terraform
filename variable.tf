@@ -54,5 +54,11 @@ variable "retention_in_days" {
 variable "workspace_sku" {
   
 }
+variable "tenant_id" {
+  
+}
+variable "subscription_id" {
+  
+}
 
 

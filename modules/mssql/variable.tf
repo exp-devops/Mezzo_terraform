@@ -24,7 +24,7 @@ variable "max_size_gb" {
 variable "vault_id" {
   
 }
-variable "privatesubet1_id" {
+variable "privatesubnet1_id" {
   
 }
 variable "vnet_id" {

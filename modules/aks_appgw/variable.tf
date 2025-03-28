@@ -4,7 +4,13 @@ variable "project_name" {
 variable "project_environment" {
   
 }
+
+
 variable "location" {
+  
+}
+
+variable "publicsubnet1_id" {
   
 }
 variable "tags" {
@@ -39,13 +45,10 @@ variable "privatesubnet1_id" {
 variable "acr_id" {
   
 }
-variable "log_analytics_workspace" {
+#variable "log_analytics_workspace" {
   
-}
+#}
 
 variable "subscription_id" {
-  
-}
-variable "appgw_name" {
   
 }

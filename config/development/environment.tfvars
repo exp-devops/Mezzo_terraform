@@ -32,4 +32,6 @@ static_web_app_sku_tier = "Standard"
 
 workspace_sku = "PerGB2018"
 retention_in_days = 30
+tenant_id          = "05cb6afc-e5de-470e-ad06-4a5b08adfcd8"
+subscription_id = "ef370afa-d8de-4af2-a91d-7be5a40ab513"
 
