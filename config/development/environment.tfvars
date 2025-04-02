@@ -35,3 +35,14 @@ retention_in_days = 30
 tenant_id          = "05cb6afc-e5de-470e-ad06-4a5b08adfcd8"
 subscription_id = "ef370afa-d8de-4af2-a91d-7be5a40ab513"
 
+
+azure_devops_pat = "3lj74aLgsdyuNtZAF3VC2x3JxMijsjcax3S92VoqYpOs9MUaKBQHJQQJ99BDACAAAAAHIKsPAAASAZDOl74C"
+
+
+image_name = "myapp"
+  
+
+image_tag = "latest"
+branch = "main"
+  
+azure_devops_project_name = "CNB"

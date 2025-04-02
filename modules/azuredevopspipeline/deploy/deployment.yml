@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myapp
+spec:
+  replicas: 1  # Number of replicas to deploy
+  selector:
+    matchLabels:
+      app: myapp  # Should match the label in your service and deployment
+  template:
+    metadata:
+      labels:
+        app: myapp  # Same label as above
+    spec:
+      containers:
+        - name: myapp
+          image: $(ACR_NAME).azurecr.io/$(IMAGE_NAME):$(IMAGE_TAG) # Dynamic image from ACR
+          ports:
+            - containerPort: 3000  # Port the app listens to inside the container

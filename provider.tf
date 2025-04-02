@@ -6,6 +6,11 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.93.0"
     }
+    azuredevops = {
+      source  = "microsoft/azuredevops"
+      version = "~> 0.9"  # Ensure you use a supported version
+    }
+    
   }
   backend "azurerm" {
     
@@ -40,4 +45,9 @@ provider "kubernetes" {
   client_certificate     = base64decode(module.aks_appgw.client_certificate)
   client_key             = base64decode(module.aks_appgw.client_key)
   cluster_ca_certificate = base64decode(module.aks_appgw.cluster_ca_certificate)
+}
+
+provider "azuredevops" {
+  org_service_url       = "https://dev.azure.com/MezzoOrg"
+  personal_access_token = var.azure_devops_pat
 }

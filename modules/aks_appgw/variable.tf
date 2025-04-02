@@ -38,9 +38,6 @@ variable "nodepool1-maxcount" {
 variable "tenant_id" {
   
 }
-variable "privatesubnet1_id" {
-  
-}
 
 variable "acr_id" {
   
@@ -50,5 +47,8 @@ variable "acr_id" {
 #}
 
 variable "subscription_id" {
+  
+}
+variable "publicsubnet2_id" {
   
 }

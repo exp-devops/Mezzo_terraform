@@ -21,7 +21,7 @@ resource "azurerm_application_gateway" "appgw" {
 
   gateway_ip_configuration {
     name      = "${var.project_name}-${var.project_environment}-appgw-ip-config"
-    subnet_id = var.publicsubnet1_id
+    subnet_id = var.publicsubnet2_id
   }
 
   frontend_ip_configuration {
@@ -90,7 +90,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
     enable_auto_scaling = true
     min_count           = var.nodepool1-mincount
     max_count           = var.nodepool1-maxcount
-    vnet_subnet_id      = var.privatesubnet1_id
+    vnet_subnet_id      = var.publicsubnet1_id
+    #temporary_name_for_rotation = "temnodepool"
     
     node_labels = {
       environment = "dev"

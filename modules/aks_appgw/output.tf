@@ -30,3 +30,7 @@ output "appgw_name" {
     value = azurerm_application_gateway.appgw.name
   
 }
+
+output "aks_cluster_name" {
+    value = azurerm_kubernetes_cluster.aks.name
+}

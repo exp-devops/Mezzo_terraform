@@ -60,5 +60,21 @@ variable "tenant_id" {
 variable "subscription_id" {
   
 }
+#------
+variable "azure_devops_pat" {
+  
+}
+variable "image_name" {
+  
+}
+variable "image_tag" {
+  
+}
+variable "branch" {
+  
+}
+variable "azure_devops_project_name" {
+  
+}
 
 

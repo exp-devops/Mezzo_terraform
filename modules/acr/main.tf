@@ -6,13 +6,13 @@ resource "azurerm_container_registry" "container_registry" {
   name                = "${var.project_name}${var.project_environment}projectacr"
   resource_group_name = var.rg_mezzo
   location            = var.location
-  sku                 = "Premium"
-  public_network_access_enabled = false
+  sku                 = "Standard"
+  public_network_access_enabled = true
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-acr"}
   )
 }
-
+/*
 resource "azurerm_private_endpoint" "acr_private_endpoint" {
   name                = "${var.project_name}-${var.project_environment}-acr-private-endpoint"
   location            = var.location
@@ -47,3 +47,4 @@ resource "azurerm_private_dns_zone_virtual_network_link" "sql_dns_link" {
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-sql-dns-link"}
   )
 }
+*/

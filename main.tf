@@ -165,7 +165,23 @@ module "aks_appgw" {
   #og_analytics_workspace = module.applicationinsights.log_analytics_workspace
    tenant_id = var.tenant_id
   subscription_id = var.subscription_id
-  privatesubnet1_id = module.vnet.privatesubnet1_id
   publicsubnet1_id = module.vnet.publicsubnet1_id
+  publicsubnet2_id = module.vnet.publicsubnet2_id
 }
 
+module "azuredevopspipeline"{
+  source = "./modules/azuredevopspipeline"
+  project_name = var.project_name
+  project_environment = var.project_environment
+  rg_mezzo = module.rg.rg_mezzo
+  branch = var.branch
+  azure_devops_project_name = var.azure_devops_project_name
+  acr_name = module.acr.acr_name
+  aks_cluster = module.aks_appgw.aks_cluster_name
+  image_name =  var.image_name
+  image_tag = var.image_tag
+
+
+
+
+}
