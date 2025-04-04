@@ -1,21 +1,27 @@
-variable "project_name" {
-  
+# The name of the project
+variable "project_name" {  
 }
-variable "project_environment" {
-  
+
+# The deployment environment 
+variable "project_environment" {  
 }
-variable "location" {
-  
+
+# The Azure region where resources will be deployed 
+variable "location" {  
 }
-variable "tags" {
-  
+
+# Tags to apply to resources 
+variable "tags" {  
 }
-variable "rg_mezzo" {
-  
+
+# The name of the Azure Resource Group where resources will be deployed.
+variable "rg_mezzo" {  
 }
+# Virtual Network Address Space
 variable "vnet_address_space" {
   
 }
+# Subnet CIDR
 variable "subnet_cidr" {
   
 }

@@ -1,32 +1,41 @@
-variable "project_name" {
-  
-}
-variable "project_environment" {
-  
-}
-variable "location" {
-  
-}
-variable "tags" {
-  
-}
-variable "rg_mezzo" {
-  
+# The name of the project
+variable "project_name" {  
 }
 
+# The deployment environment 
+variable "project_environment" {  
+}
 
-variable "sql_sku_name" {
-  
+# The Azure region where resources will be deployed 
+variable "location" {  
 }
-variable "max_size_gb" {
-  
+
+# Tags to apply to resources 
+variable "tags" {  
 }
-variable "vault_id" {
-  
+
+# The name of the Azure Resource Group where resources will be deployed.
+variable "rg_mezzo" {  
 }
-variable "privatesubnet1_id" {
-  
+
+# The SKU for the Azure SQL Database.
+variable "sql_sku_name" {  
 }
-variable "vnet_id" {
-  
+
+# The maximum storage size (in GB) for the Azure SQL Database.
+variable "max_size_gb" {  
+}
+
+# The Azure Key Vault ID where sensitive secrets, such as passwords, will be stored.
+variable "vault_id" {  
+}
+
+# The ID of the private subnet where the Azure SQL Private Endpoint will be deployed.
+variable "privatesubnet1_id" {  
+    
+}
+
+# The ID of the Virtual Network (VNet) 
+variable "vnet_id" { 
+
 }

@@ -1,3 +1,4 @@
+# Common tags to apply to all resources
 locals {
   common_tags             = var.tags
 }
@@ -16,11 +17,6 @@ name                      = "${var.project_name}${var.project_environment}wafpol
 resource_group_name       = var.rg_mezzo
 sku_name                  = "Standard_AzureFrontDoor"
 mode                      = "Prevention"
-/* managed_rule {
-    type    = "DefaultRuleSet"
-    version = "1.0"
-    action = "Block"
-}*/
 custom_rule {
     name                           = "Rule1"
     enabled                        = true
@@ -42,6 +38,7 @@ custom_rule {
   )
 }
 #-------------- admin portal-----------------------------------------
+# Security policy for admnin Portal
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy-admin" {
   name                                 = "${var.project_name}-${var.project_environment}-admin-frontdoor-security-policy"
   cdn_frontdoor_profile_id             = azurerm_cdn_frontdoor_profile.frontdoor-profile-admin.id
@@ -61,7 +58,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy-admi
  
 }
 
-# AZURE FRONT DOOR PROFILE
+# Azure frontdoor for Admin portal
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-profile-admin" {
 name                                  = "${var.project_name}-${var.project_environment}-admin-front-door-profile"
 resource_group_name                   = var.rg_mezzo
@@ -71,7 +68,7 @@ tags = merge(
   )
 }
  
-# FRONT DOOR ENDPOINT (Defines the default URL)
+# Azure frontdoor endpoint for Admin portal
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-endpoint-admin" {
 name                                  = "${var.project_name}-${var.project_environment}-admin-endpoint"
 cdn_frontdoor_profile_id              = azurerm_cdn_frontdoor_profile.frontdoor-profile-admin.id
@@ -80,7 +77,7 @@ tags = merge(
   )
 }
  
-#  ORIGIN GROUP (Backend for Front Door)
+# Origin Group for Admin portal
 
 resource "azurerm_cdn_frontdoor_origin_group" "origin-group-admin" {
   name                                = "${var.project_name}-${var.project_environment}-admin-origin-group"
@@ -93,20 +90,20 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-admin" {
     path                               = "/health"
   }
   load_balancing {
-    sample_size                        = 4    # Number of samples for latency measurement
-    successful_samples_required        = 3    # Required successful samples for an origin to be considered healthy
-    additional_latency_in_milliseconds = 50   # Extra latency to add for load balancing decisions
+    sample_size                        = 4            # Number of samples for latency measurement
+    successful_samples_required        = 3            # Required successful samples for an origin to be considered healthy
+    additional_latency_in_milliseconds = 50           # Extra latency to add for load balancing decisions
   }
   
 }
  
-# ORIGIN (Backend Web App or API)
+# Origin for Admin portal
 
 resource "azurerm_cdn_frontdoor_origin" "origin-admin" {
   name                                 = "${var.project_name}-${var.project_environment}-admin-origin"
   cdn_frontdoor_origin_group_id        = azurerm_cdn_frontdoor_origin_group.origin-group-admin.id
   enabled                              = true
-  host_name                            =  "${var.static_web_app_url_admin}" # Replace with your backend
+  host_name                            =  "${var.static_web_app_url_admin}" 
   priority                             = 1
   weight                               = 1
   certificate_name_check_enabled       = false
@@ -114,7 +111,7 @@ resource "azurerm_cdn_frontdoor_origin" "origin-admin" {
 
 }
  
-# FRONT DOOR ROUTE CONFIGURATION
+# Front door route configuration for Admin portal
 
 resource "azurerm_cdn_frontdoor_route" "route-admin" {
   name                                 = "${var.project_name}-${var.project_environment}-admin-route"
@@ -125,11 +122,10 @@ resource "azurerm_cdn_frontdoor_route" "route-admin" {
   patterns_to_match                    = ["/*"]
   https_redirect_enabled               = true
   link_to_default_domain               = true
-  #cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.waf_policy.id
-  
+
 }
  
-#  CUSTOM DOMAIN (CNAME RECORD FOR FRONT DOOR)
+#  Custom Domain for Admin portal
 
 resource "azurerm_dns_cname_record" "dns-frontdoor-admin" {
   name                = "${var.project_name}-${var.project_environment}-admin"
@@ -142,7 +138,9 @@ resource "azurerm_dns_cname_record" "dns-frontdoor-admin" {
   )
 }
 
-#--------------------borrower portal----------------
+#--------------------Borrower portal----------------
+
+# Security policy for Borrower Portal
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy-borrower" {
   name                                 = "${var.project_name}-${var.project_environment}-borrower-frontdoor-security-policy"
   cdn_frontdoor_profile_id             = azurerm_cdn_frontdoor_profile.frontdoor-profile-borrower.id
@@ -161,7 +159,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy-borr
   }
 }
 
-# AZURE FRONT DOOR PROFILE
+# Azure Front Door Profile for borrower portal
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-profile-borrower" {
 name                                  = "${var.project_name}-${var.project_environment}-borrower-front-door-profile"
 resource_group_name                   = var.rg_mezzo
@@ -171,7 +169,7 @@ tags = merge(
   )
 }
  
-# FRONT DOOR ENDPOINT (Defines the default URL)
+# Front door endpoint for borrower portal
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-endpoint-borrower" {
 name                                  = "${var.project_name}-${var.project_environment}-borrower-endpoint"
 cdn_frontdoor_profile_id              = azurerm_cdn_frontdoor_profile.frontdoor-profile-borrower.id
@@ -180,7 +178,7 @@ tags = merge(
   )
 }
  
-# ORIGIN GROUP (Backend for Front Door)
+# Origin Group for borrower portal
 
 resource "azurerm_cdn_frontdoor_origin_group" "origin-group-borrower" {
   name                                = "${var.project_name}-${var.project_environment}-borrower-origin-group"
@@ -193,14 +191,14 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-borrower" {
     path                               = "/health"
   }
   load_balancing {
-    sample_size                        = 4    # Number of samples for latency measurement
-    successful_samples_required        = 3    # Required successful samples for an origin to be considered healthy
-    additional_latency_in_milliseconds = 50   # Extra latency to add for load balancing decisions
+    sample_size                        = 4             # Number of samples for latency measurement
+    successful_samples_required        = 3             # Required successful samples for an origin to be considered healthy
+    additional_latency_in_milliseconds = 50            # Extra latency to add for load balancing decisions
   }
   
 }
  
-#  ORIGIN (Backend Web App or API)
+#  Origin Group for Borrower portal
 
 resource "azurerm_cdn_frontdoor_origin" "origin-borrower" {
   name                                 = "${var.project_name}-${var.project_environment}-borrower-origin"
@@ -214,7 +212,7 @@ resource "azurerm_cdn_frontdoor_origin" "origin-borrower" {
 
 }
  
-# FRONT DOOR ROUTE CONFIGURATION
+# Front door configuration configuration for borrower portal
 
 resource "azurerm_cdn_frontdoor_route" "route-borrower" {
   name                                 = "${var.project_name}-${var.project_environment}-borrower-route"
@@ -225,12 +223,9 @@ resource "azurerm_cdn_frontdoor_route" "route-borrower" {
   patterns_to_match                    = ["/*"]
   https_redirect_enabled               = true
   link_to_default_domain               = true
-  #cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.waf_policy.id
-  
-
 }
  
-#  CUSTOM DOMAIN (CNAME RECORD FOR FRONT DOOR)
+#  Custom Domain for borrower portal
 
 resource "azurerm_dns_cname_record" "dns-frontdoor-borrower" {
   name                = "${var.project_name}-${var.project_environment}-borrower"
@@ -242,7 +237,10 @@ tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-borrower-dns-record"}
   )
 }
-#--------------------application gateway----------------
+
+#--------------------Application gateway(Backend)----------------
+
+# Security policy for Borrower Portal
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy-appgw" {
   name                                 = "${var.project_name}-${var.project_environment}-appgw-frontdoor-security-policy"
   cdn_frontdoor_profile_id             = azurerm_cdn_frontdoor_profile.frontdoor-profile-appgw.id
@@ -261,7 +259,7 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy-appg
   }
 }
 
-# AZURE FRONT DOOR PROFILE
+# Azure front door profile for application gateway
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-profile-appgw" {
 name                                  = "${var.project_name}-${var.project_environment}-appgw-front-door-profile"
 resource_group_name                   = var.rg_mezzo
@@ -271,7 +269,7 @@ tags = merge(
   )
 }
  
-# FRONT DOOR ENDPOINT (Defines the default URL)
+# Frontdoor enpoint for application gateway
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-endpoint-appgw" {
 name                                  = "${var.project_name}-${var.project_environment}-appgw-endpoint"
 cdn_frontdoor_profile_id              = azurerm_cdn_frontdoor_profile.frontdoor-profile-appgw.id
@@ -280,7 +278,7 @@ tags = merge(
   )
 }
  
-# ORIGIN GROUP (Backend for Front Door)
+# Origin group application gateway
 
 resource "azurerm_cdn_frontdoor_origin_group" "origin-group-appgw" {
   name                                = "${var.project_name}-${var.project_environment}-appgw-origin-group"
@@ -293,14 +291,14 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-appgw" {
     path                               = "/health"
   }
   load_balancing {
-    sample_size                        = 4    # Number of samples for latency measurement
-    successful_samples_required        = 3    # Required successful samples for an origin to be considered healthy
-    additional_latency_in_milliseconds = 50   # Extra latency to add for load balancing decisions
+    sample_size                        = 4               # Number of samples for latency measurement
+    successful_samples_required        = 3               # Required successful samples for an origin to be considered healthy
+    additional_latency_in_milliseconds = 50              # Extra latency to add for load balancing decisions
   }
   
 }
  
-#  ORIGIN (Backend Web App or API)
+#  Origin for Application gateway
 
 resource "azurerm_cdn_frontdoor_origin" "origin-appgw" {
   name                                 = "${var.project_name}-${var.project_environment}-appgw-origin"
@@ -314,7 +312,7 @@ resource "azurerm_cdn_frontdoor_origin" "origin-appgw" {
 
 }
  
-#  FRONT DOOR ROUTE CONFIGURATION
+#  Front door route configuration for application gateway
 
 resource "azurerm_cdn_frontdoor_route" "route-appgw" {
   name                                 = "${var.project_name}-${var.project_environment}-appgw-route"
@@ -325,12 +323,10 @@ resource "azurerm_cdn_frontdoor_route" "route-appgw" {
   patterns_to_match                    = ["/*"]
   https_redirect_enabled               = true
   link_to_default_domain               = true
-  #cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.waf_policy.id
   
-
 }
  
-#  CUSTOM DOMAIN (CNAME RECORD FOR FRONT DOOR)
+#  Custom domain for Application gateway
 
 resource "azurerm_dns_cname_record" "dns-frontdoor-appgw" {
   name                = "${var.project_name}-${var.project_environment}-appgw"

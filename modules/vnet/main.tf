@@ -1,3 +1,4 @@
+# Common tags to apply to all resources
 locals {
   common_tags             = var.tags
 }
@@ -40,7 +41,7 @@ resource "azurerm_subnet" "tf_private_zone2" {
   virtual_network_name = azurerm_virtual_network.tf_vnet.name
   address_prefixes     = var.subnet_cidr["SUBNET_04"]
 }
-# Nat Gateway
+# Nat Public IP 1
 resource "azurerm_public_ip" "tf_nat_ip_1" {
   name                = "${var.project_name}-${var.project_environment}-nat-ip-1"
   location            = var.location
@@ -52,7 +53,7 @@ resource "azurerm_public_ip" "tf_nat_ip_1" {
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-nat-ip-1"}
   )
 }
-# Private Subnet 2
+# Nat Gateway 1 
 resource "azurerm_nat_gateway" "tf_azurerm_nat_gateway1" {
   name                = "${var.project_name}-${var.project_environment}-nat-gateway-1"
   location            = var.location
@@ -63,6 +64,7 @@ resource "azurerm_nat_gateway" "tf_azurerm_nat_gateway1" {
   )
  
 }
+# Nat Public IP 2
 resource "azurerm_public_ip" "tf_nat_ip_2" {
   name                = "${var.project_name}-${var.project_environment}-nat-ip-2"
   location            = var.location
@@ -74,7 +76,7 @@ resource "azurerm_public_ip" "tf_nat_ip_2" {
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-nat-ip-2"}
   )
 }
-
+# Nat Gateway 2
 resource "azurerm_nat_gateway" "tf_azurerm_nat_gateway2" {
   name                = "${var.project_name}-${var.project_environment}-nat-gateway-2"
   location            = var.location

@@ -1,12 +1,16 @@
-variable "project_name" {
-  
+# The name of the project, used for naming and identifying resources.
+variable "project_name" {  
 }
-variable "project_environment" {
-  
+
+
+# Consider enforcing allowed values using validation.
+variable "project_environment" {  
 }
-variable "location" {
-  
+
+# The Azure region where resources will be deployed 
+variable "location" {  
 }
-variable "tags" {
-  
+
+# Tags to apply to resources.
+variable "tags" {  
 }

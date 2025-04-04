@@ -1,15 +1,11 @@
 trigger:
-  - main
+  - master
 
 pool:
   vmImage: 'ubuntu-latest'
 
-variables: 
-  IMAGE_TAG: $(IMAGE_TAG)  
-  ACR_NAME: $(ACR_NAME)
-  IMAGE_NAME: $(IMAGE_NAME)
-  RESOURCE_GROUP: $(RESOURCE_GROUP)
-  AKS_CLUSTER: $(AKS_CLUSTER)
+variables:
+- group: "mezzo-dev-aks-variable-group"
   
 
 steps:
@@ -29,7 +25,7 @@ steps:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceEndpoint: 'test1'
       command: 'apply'
-      arguments: '-f k8s/deployment.yaml'
+      arguments: '-f k8s/deployment.yml'
       secretType: 'dockerRegistry'
       containerRegistryType: 'Azure Container Registry'
 

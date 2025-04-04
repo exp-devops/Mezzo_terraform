@@ -1,18 +1,24 @@
-variable "project_name" {
-  
+# The name of the project
+variable "project_name" {  
 }
-variable "project_environment" {
-  
+
+# The deployment environment 
+variable "project_environment" {  
 }
-variable "tags" {
-  
+
+# The Azure region where resources will be deployed 
+variable "location" {  
 }
-variable "static_web_app_sku_tier" {
-  
+
+# Tags to apply to resources 
+variable "tags" {  
 }
-variable "rg_mezzo" {
-  
+
+# The name of the Azure Resource Group where resources will be deployed.
+variable "rg_mezzo" {  
 }
-variable "location" {
+
+# Sku tier for Static Web app
+variable "staticwebapp_sku_tier" {
   
 }
