@@ -80,7 +80,7 @@ backend_address_pool {
 resource "azurerm_kubernetes_cluster" "aks" {
   name                             = "${var.project_name}-${var.project_environment}-aks-cluster"        
   location                         = var.location                                                        
-  resource_group_name              = var.rg_mezzo                                                        
+  resource_group_name              = var.rg_mezzo                                                       
   dns_prefix                       = "${var.project_name}-${var.project_environment}-dns"                
   kubernetes_version               = var.kubernetes_version                                                
   sku_tier                         = var.aks_sku_tier                                                    

@@ -9,8 +9,12 @@ resource "azurerm_container_registry" "container_registry" {
   resource_group_name           = var.rg_mezzo                                                 
   location                      = var.location                                                 
   sku                           = "Standard"                                                   
-  public_network_access_enabled = true                                                         # Set to true to enable admin user authentication
+  public_network_access_enabled = true                                                        # Set to true to enable admin user authentication
+  admin_enabled            = true
   tags = merge(                                                                                
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-acr"}
   )
 }
+
+
+

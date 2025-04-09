@@ -46,3 +46,22 @@ variable "image_tag" {
 variable "github_service_connection" {
   
 }
+
+variable "deployment_token_admin" {
+  
+}
+variable "deployment_token_borrower" {
+  
+}
+variable "build_dir" {
+  
+}
+variable "acr_url" {
+  
+}
+variable "acr_admin_username" {
+  
+}
+variable "acr_admin_password" {
+  
+}

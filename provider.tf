@@ -6,7 +6,7 @@ terraform {
     # Define the AzureRM provider for managing Azure resources.
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.93.0"  
+      version = "~> 3.90"  
     }
 
     # Define the Azure DevOps provider for managing DevOps resources.

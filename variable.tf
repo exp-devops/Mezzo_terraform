@@ -113,3 +113,7 @@ variable "azure_devops_project_name" {
 variable "github_service_connection" {
   
 }
+
+variable "build_dir" {
+  
+}

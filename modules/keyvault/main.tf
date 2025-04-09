@@ -60,8 +60,3 @@ resource "azurerm_key_vault_secret" "subscription_id" {
   key_vault_id = azurerm_key_vault.tf_key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "tenant_id" {
-  name         = "${var.project_name}-${var.project_environment}-tenant-id-secret"
-  value        = data.azurerm_client_config.current.tenant_id   
-  key_vault_id = azurerm_key_vault.tf_key_vault.id
-}

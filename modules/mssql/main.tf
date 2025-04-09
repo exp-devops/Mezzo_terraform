@@ -90,7 +90,3 @@ resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
   end_ip_address   = "0.0.0.0"
 }
 
-resource "azurerm_mssql_database_short_term_retention_policy" "short_term" {
-  database_id           = azurerm_mssql_database.sql_database.id
-  retention_days        = 30  # <-- Retain daily backups for 30 days
-}

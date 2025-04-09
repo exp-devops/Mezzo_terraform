@@ -24,7 +24,7 @@ sql_sku_name = "HS_Gen5_2"
 #aks
 nodepool1-maxcount = 2
 nodepool1-mincount = 1
-kubernetes_version = "1.30.10" 
+kubernetes_version = "1.31.7" 
 #kubernetes_version  = "1.28.3"
 vm_size = "Standard_DS2_v2"
 aks_sku_tier = "Standard"
@@ -49,3 +49,5 @@ branch = "main"
 azure_devops_project_name = "CNB"
 
 github_service_connection = "6ad1ec3c-d90f-420c-b4dc-73147d178394"
+
+build_dir = "dist"

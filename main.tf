@@ -17,16 +17,6 @@ module "vnet" {
   subnet_cidr          = var.subnet_cidr
   tags                 = var.tags 
 }
-module "acr" {
-  source               = "./modules/acr"
-  project_name         = var.project_name
-  project_environment  = var.project_environment
-  location             = var.location
-  rg_mezzo             = module.rg.rg_mezzo
-  tags                 = var.tags 
-  vnet_id              = module.vnet.vnet_id
-  privatesubnet1_id    = module.vnet.privatesubnet1_id
-}
 
 
 # Modules for Key Vault
@@ -37,7 +27,7 @@ module "keyvault" {
   location             = var.location
   rg_mezzo             = module.rg.rg_mezzo
   tags                 = var.tags 
-}/*
+}
 # Modules for MS SQL
 module "mssql" {
   source               = "./modules/mssql"
@@ -105,6 +95,7 @@ module "frontdoor"{
 }
 
 
+
 # Modules for Elastic Search
 module "elasticsearch" {
 
@@ -113,7 +104,8 @@ module "elasticsearch" {
   project_environment= var.project_environment
   location           = var.location
   rg_mezzo           = module.rg.rg_mezzo  
-}*/
+  tags               = var.tags
+}
 
 # Modules for Application gateway and AKS
 module "aks_appgw" {
@@ -141,6 +133,9 @@ module "azuredevopspipeline"{
   project_name       = var.project_name
   project_environment= var.project_environment
   rg_mezzo           = module.rg.rg_mezzo
+  acr_url            = module.acr.acr_url
+  acr_admin_password = module.acr.acr_admin_password
+  acr_admin_username = module.acr.acr_admin_username
   branch             = var.branch
   devopsprojectname  = var.azure_devops_project_name
   acr_name           = module.acr.acr_name
@@ -148,4 +143,7 @@ module "azuredevopspipeline"{
   image_name         =  var.image_name
   image_tag          = var.image_tag
   github_service_connection =var.github_service_connection
+  deployment_token_admin   = module.staticwebapps.static_web_app_deployment_token_admin
+  deployment_token_borrower   = module.staticwebapps.static_web_app_deployment_token_borrower
+  build_dir          = var.build_dir
 }

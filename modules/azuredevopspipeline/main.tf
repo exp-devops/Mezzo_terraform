@@ -7,11 +7,25 @@ terraform {
   }
 }
 
+
 # Retrieves the Azure DevOps project details
 data "azuredevops_project" "CNB-project" {
   name = var.devopsprojectname
 }
+resource "azuredevops_serviceendpoint_dockerregistry" "acr_service_connection" {
+  project_id            = data.azuredevops_project.CNB-project.id
+  service_endpoint_name = "${var.project_name}-${var.project_environment}-service-connection"
+  docker_registry       = var.acr_url
+  docker_username       = var.acr_admin_username
+  docker_password       = var.acr_admin_password
+  registry_type         = "Others" # "ACR" is only supported if using Managed Identity or Azure Resource Manager
 
+
+
+  description = "Service connection to mezzodevprojectacr"
+}
+
+#Azure Devops Pipeline for Static App
 resource "azuredevops_build_definition" "pipeline" {
   project_id = data.azuredevops_project.CNB-project.id
   name       = "${var.project_name}-${var.project_environment}-pipeline"
@@ -24,16 +38,135 @@ resource "azuredevops_build_definition" "pipeline" {
   repository {
     repo_type             = "GitHub"  
     #repo_id              = "meezo-kevin/mezzocicdtesting-terraform"
-    repo_id               = "Mezzo-CityNational/testmezzocicd"
+    repo_id               = "Mezzo-CityNational/admin-portal"
     branch_name           = "refs/heads/main"
     yml_path              = "azure-pipelines.yml"
     service_connection_id = var.github_service_connection  # Connect to GitHub token
   }
+  variable_groups = [
+    azuredevops_variable_group.aks_variable_group.id
+  ]
+}
+resource "azuredevops_variable_group" "aks_variable_group" {
+  project_id   = data.azuredevops_project.CNB-project.id
+  name         = "${var.project_name}-${var.project_environment}-aks-variable-group"
+  description  = "Managed by Terraform"
+  allow_access = true
+
+  variable {
+    name  = "ACR_NAME"
+    value = var.acr_name
+  }
+
+  variable {
+    name  = "IMAGE_NAME"
+    value = var.image_name
+  }
+
+  variable {
+    name  = "RESOURCE_GROUP"
+    value = var.rg_mezzo
+  }
+
+  variable {
+    name   = "AKS_CLUSTER_NAME"
+    value  = var.aks_cluster
+  }
+  variable{
+    name  = "IMAGE_TAG"
+    value = var.image_tag
+  }
+}
+
+
+  resource "azuredevops_build_definition" "admin_pipeline" {
+  project_id = data.azuredevops_project.CNB-project.id
+  name       = "${var.project_name}-${var.project_environment}-admin-static-webapps-pipeline"
+  path       = "\\"  # Root folder
+
+  ci_trigger {
+    use_yaml = true
+  }
+
+  repository {
+    repo_type             = "GitHub"  
+    #repo_id              = "meezo-kevin/mezzocicdtesting-terraform"
+    repo_id               = "Mezzo-CityNational/admin-portal"
+    branch_name           = "refs/heads/main"
+    yml_path              = "azure-pipelines.yml"
+    service_connection_id = var.github_service_connection  # Connect to GitHub token
+    
+  }
+   variable_groups = [
+    azuredevops_variable_group.admin_variable_group.id
+  ]
+  }
+  resource "azuredevops_variable_group" "admin_variable_group" {
+  project_id   = data.azuredevops_project.CNB-project.id
+  name         = "${var.project_name}-${var.project_environment}-admin-static-webaaps-variable-group"
+  description  = "Managed by Terraform"
+  allow_access = true
+
+  variable {
+    name  = "build_dir"
+    value = var.build_dir
+  }
+   variable {
+    name  = "deployment_token"
+    value = var.deployment_token_admin
+  }  
+
+}
+
+ resource "azuredevops_build_definition" "borrower_pipeline" {
+  project_id = data.azuredevops_project.CNB-project.id
+  name       = "${var.project_name}-${var.project_environment}-borrower-static-webapps-pipeline"
+  path       = "\\"  # Root folder
+
+  ci_trigger {
+    use_yaml = true
+  }
+
+  repository {
+    repo_type             = "GitHub"  
+    #repo_id              = "meezo-kevin/mezzocicdtesting-terraform"
+    repo_id               = "Mezzo-CityNational/borrower-portal"
+    branch_name           = "refs/heads/main"
+    yml_path              = "azure-pipelines.yml"
+    service_connection_id = var.github_service_connection  # Connect to GitHub token
+    
+  }
+   variable_groups = [
+    azuredevops_variable_group.borrower_variable_group.id
+  ]
+  }
+  resource "azuredevops_variable_group" "borrower_variable_group" {
+  project_id   = data.azuredevops_project.CNB-project.id
+  name         = "${var.project_name}-${var.project_environment}-borrower-static-webaaps-variable-group"
+  description  = "Managed by Terraform"
+  allow_access = true
+
+  variable {
+    name  = "build_dir"
+    value = var.build_dir
+  }
+   variable {
+    name  = "deployment_token"
+    value = var.deployment_token_borrower
+  }  
+
+}
+
+
+
+
+
+/*
 /*
   variable_groups = [
     azuredevops_variable_group.aks-variable_group.id
   ]*/
-}
+
 
 
 
