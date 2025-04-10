@@ -2,6 +2,58 @@
 locals {
   common_tags             = var.tags
 }
+
+
+
+resource "azurerm_cdn_frontdoor_firewall_policy" "waf_policy" {
+name                      = "${var.project_name}${var.project_environment}wafpolicy"
+resource_group_name       = var.rg_mezzo
+sku_name                  = "Standard_AzureFrontDoor"
+mode                      = "Prevention"
+/* managed_rule {
+    type    = "DefaultRuleSet"
+    version = "1.0"
+    action = "Block"
+}*/
+custom_rule {
+    name                           = "Rule1"
+    enabled                        = true
+    priority                       = 1
+    rate_limit_duration_in_minutes = 1
+    rate_limit_threshold           = 10
+    type                           = "MatchRule"
+    action                         = "Block"
+
+    match_condition {
+      match_variable               = "RemoteAddr"
+      operator                     = "IPMatch"
+      negation_condition           = false
+      match_values                 = ["192.168.1.0/24", "10.0.1.0/24"]
+    }
+  }
+  tags = merge(
+    local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-waf-policy"}
+  )
+}
+
+resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy-admin" {
+  name                                 = "${var.project_name}-${var.project_environment}-admin-frontdoor-security-policy"
+  cdn_frontdoor_profile_id             = azurerm_cdn_frontdoor_profile.frontdoor-profile-admin.id
+
+  security_policies {
+    firewall {
+      cdn_frontdoor_firewall_policy_id = azurerm_cdn_frontdoor_firewall_policy.waf_policy.id
+
+      association {
+        domain {
+          cdn_frontdoor_domain_id      = azurerm_cdn_frontdoor_endpoint.frontdoor-endpoint-admin.id
+        }
+        patterns_to_match              = ["/*"]
+      }
+    }
+  }
+ 
+}
 # Azure frontdoor for Admin portal
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-profile-admin" {
 name                                  = "${var.project_name}-${var.project_environment}-admin-front-door-profile"
@@ -225,7 +277,18 @@ resource "azurerm_cdn_frontdoor_route" "route-appgw" {
   patterns_to_match                    = ["/*"]
   https_redirect_enabled               = true
   link_to_default_domain               = true
+  cdn_frontdoor_custom_domain_ids      = [azurerm_cdn_frontdoor_custom_domain.api_custom_domain.id]
   
+}
+
+resource "azurerm_cdn_frontdoor_custom_domain" "api_custom_domain" {
+  name                     = "${var.project_name}-${var.project_environment}-api-custom-domains"
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-profile-appgw.id
+  host_name                = "mezzo-development-api.experionglobal.dev"  # Replace with your subdomain
+
+  tls {
+    certificate_type = "ManagedCertificate"
+  }
 }
  
 

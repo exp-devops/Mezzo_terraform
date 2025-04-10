@@ -146,4 +146,8 @@ module "azuredevopspipeline"{
   deployment_token_admin   = module.staticwebapps.static_web_app_deployment_token_admin
   deployment_token_borrower   = module.staticwebapps.static_web_app_deployment_token_borrower
   build_dir          = var.build_dir
+  aks_api_url        = module.aks_appgw.aks_api_url
+  aks_cluster_name   = module.aks_appgw.aks_cluster_name
+  rg_mezzo_id        = module.rg.rg_mezzo_id
+  subscription_name  =var.subscription_name
 }

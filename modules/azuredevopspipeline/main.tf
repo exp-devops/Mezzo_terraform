@@ -6,6 +6,9 @@ terraform {
     }
   }
 }
+data "azurerm_client_config" "current" {
+
+}
 
 
 # Retrieves the Azure DevOps project details
@@ -14,21 +17,47 @@ data "azuredevops_project" "CNB-project" {
 }
 resource "azuredevops_serviceendpoint_dockerregistry" "acr_service_connection" {
   project_id            = data.azuredevops_project.CNB-project.id
-  service_endpoint_name = "${var.project_name}-${var.project_environment}-service-connection"
+  service_endpoint_name = "${var.project_name}-${var.project_environment}-acr-service-connection"
   docker_registry       = var.acr_url
   docker_username       = var.acr_admin_username
   docker_password       = var.acr_admin_password
   registry_type         = "Others" # "ACR" is only supported if using Managed Identity or Azure Resource Manager
-
-
-
   description = "Service connection to mezzodevprojectacr"
+ 
+}
+resource "azuredevops_pipeline_authorization" "acr_service_connection_permission" {
+  project_id  = data.azuredevops_project.CNB-project.id                      # The ID of the Azure DevOps project
+  resource_id = azuredevops_serviceendpoint_dockerregistry.acr_service_connection.id  # The ID of the Docker registry service connection
+  type        = "endpoint"                                          # The type of resource being authorized, "endpoint" is for service connections
 }
 
+/*
+resource "azuredevops_serviceendpoint_kubernetes" "aks_service_connection" {
+  project_id            = data.azuredevops_project.CNB-project.id
+  service_endpoint_name = "${var.project_name}-${var.project_environment}-aks-service-connection"
+  apiserver_url         = var.aks_api_url
+  authorization_type    = "AzureSubscription"
+
+  azure_subscription {
+    subscription_id   = data.azurerm_client_config.current.subscription_id
+    subscription_name = var.subscription_name
+    tenant_id         = data.azurerm_client_config.current.tenant_id   
+    resourcegroup_id =  var.rg_mezzo_id
+    cluster_name      = var.aks_cluster_name
+  }
+}
+resource "azuredevops_pipeline_authorization" "aks_service_connection_permission" {
+  project_id  = data.azuredevops_project.CNB-project.id                      # The ID of the Azure DevOps project
+  resource_id = azuredevops_serviceendpoint_kubernetes.aks_service_connection.id  # The ID of the Docker registry service connection
+  type        = "endpoint"                                          # The type of resource being authorized, "endpoint" is for service connections
+}*/
+
+
+
 #Azure Devops Pipeline for Static App
-resource "azuredevops_build_definition" "pipeline" {
+resource "azuredevops_build_definition" "aks_pipeline" {
   project_id = data.azuredevops_project.CNB-project.id
-  name       = "${var.project_name}-${var.project_environment}-pipeline"
+  name       = "${var.project_name}-${var.project_environment}-aks-pipeline"
   path       = "\\"  # Root folder
 
   ci_trigger {
@@ -38,9 +67,9 @@ resource "azuredevops_build_definition" "pipeline" {
   repository {
     repo_type             = "GitHub"  
     #repo_id              = "meezo-kevin/mezzocicdtesting-terraform"
-    repo_id               = "Mezzo-CityNational/admin-portal"
-    branch_name           = "refs/heads/main"
-    yml_path              = "azure-pipelines.yml"
+    repo_id               = "Mezzo-CityNational/core-service"
+    branch_name           = "refs/heads/Nirupama-Suresh-patch-1"
+    yml_path              = "azure-pipeline.yml"
     service_connection_id = var.github_service_connection  # Connect to GitHub token
   }
   variable_groups = [
@@ -75,6 +104,22 @@ resource "azuredevops_variable_group" "aks_variable_group" {
   variable{
     name  = "IMAGE_TAG"
     value = var.image_tag
+  }
+  variable {
+    name  = "PROJECT_NAME"
+    value = var.project_name
+  }
+  variable {
+    name  = "PROJECT_ENVIRONMENT"
+    value = var.project_environment
+  }
+  variable {
+    name  = "ACR-SERVICE-CONNECTION"
+    value = "${var.project_name}-${var.project_environment}-acr-service-connection"
+  }
+  variable {
+    name  = "AKS-SERVICE-CONNECTION"
+    value = "${var.project_name}-${var.project_environment}-aks-service-connection"
   }
 }
 
@@ -115,6 +160,14 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     name  = "deployment_token"
     value = var.deployment_token_admin
   }  
+  variable {
+    name  = "PROJECT_NAME"
+    value = var.project_name
+  }
+  variable {
+    name  = "PROJECT_ENVIRONMENT"
+    value = var.project_environment
+  }
 
 }
 
@@ -153,7 +206,15 @@ resource "azuredevops_variable_group" "aks_variable_group" {
    variable {
     name  = "deployment_token"
     value = var.deployment_token_borrower
-  }  
+  } 
+  variable {
+    name  = "PROJECT_NAME"
+    value = var.project_name
+  }
+  variable {
+    name  = "PROJECT_ENVIRONMENT"
+    value = var.project_environment
+  } 
 
 }
 

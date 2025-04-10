@@ -65,3 +65,16 @@ variable "acr_admin_username" {
 variable "acr_admin_password" {
   
 }
+
+variable "aks_api_url" {
+  
+}
+variable "rg_mezzo_id" {
+  
+}
+variable "aks_cluster_name" {
+  
+}
+variable "subscription_name" {
+  
+}

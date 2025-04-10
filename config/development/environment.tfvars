@@ -40,14 +40,16 @@ retention_in_days = 30
 azure_devops_pat = "3lj74aLgsdyuNtZAF3VC2x3JxMijsjcax3S92VoqYpOs9MUaKBQHJQQJ99BDACAAAAAHIKsPAAASAZDOl74C"
 
 
-image_name = "mezzodevprojectacr/myapp"
+image_name = "core-service"
   
 
 image_tag = "latest"
-branch = "main"
+branch = "Nirupama-Suresh-patch-1"
   
 azure_devops_project_name = "CNB"
 
 github_service_connection = "6ad1ec3c-d90f-420c-b4dc-73147d178394"
 
 build_dir = "dist"
+
+subscription_name = "cnb_dev"

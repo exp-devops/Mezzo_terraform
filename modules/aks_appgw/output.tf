@@ -36,3 +36,8 @@ output "appgw_name" {
 output "aks_cluster_name" {
     value = azurerm_kubernetes_cluster.aks.name
 }
+
+output "aks_api_url" {
+  value= azurerm_kubernetes_cluster.aks.kube_config[0].host
+  
+}

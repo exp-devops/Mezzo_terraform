@@ -48,6 +48,7 @@ resource "azurerm_application_gateway" "appgw" {
 # Defines the backend pool where incoming traffic will be forwarded.
 backend_address_pool {
     name                           = "${var.project_name}-${var.project_environment}-appgw-backend-pool" 
+    
   }
 
 # Configures how the gateway communicates with the backend.
@@ -137,4 +138,36 @@ resource "azurerm_role_assignment" "acr_pull" {
   scope                            = var.acr_id                                                      
   role_definition_name             = "AcrPull"                                                       
   principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id    
+}
+
+resource "kubernetes_ingress_v1" "app_ingress" {
+  metadata {
+    name      = "app-ingress"
+    namespace = "default"
+    annotations = {
+      "kubernetes.io/ingress.class"      = "azure/application-gateway"
+      "appgw.ingress.kubernetes.io/backend-path-prefix" = "/"
+      "appgw.ingress.kubernetes.io/use-private-ip"      = "true"
+    }
+  }
+
+  spec {
+    rule {
+      host = "mezzo-dev-api.experionglobal.dev"
+      http {
+        path {
+          backend {
+            service {
+              name = "core-service"
+              port {
+                number = 80
+              }
+            }
+          }
+          path = "/"
+        }
+      }
+    }
+  }
+     depends_on = [azurerm_kubernetes_cluster.aks]
 }

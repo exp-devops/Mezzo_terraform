@@ -117,3 +117,6 @@ variable "github_service_connection" {
 variable "build_dir" {
   
 }
+variable "subscription_name" {
+  
+}
