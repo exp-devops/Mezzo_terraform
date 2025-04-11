@@ -44,7 +44,7 @@ image_name = "core-service"
   
 
 image_tag = "latest"
-branch = "Nirupama-Suresh-patch-1"
+branch = "Nirupama-Suresh-patch-3"
   
 azure_devops_project_name = "CNB"
 

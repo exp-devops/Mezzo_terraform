@@ -41,13 +41,13 @@ resource "azurerm_mssql_database" "sql_database" {
 }
 
 # Store the SQL administrator password in Azure Key Vault as a secret.
+
 resource "azurerm_key_vault_secret" "sql_password_secret" {
   depends_on   = [azurerm_mssql_server.sql_server]
   name         = "${var.project_name}-${var.project_environment}-sql-password-secret"
   value        = random_password.sql_password.result
   key_vault_id = var.vault_id
 }
-
 # Create a private endpoint for the Azure SQL Server to enable private access.
 resource "azurerm_private_endpoint" "sql_private_endpoint" {
   name                = "${var.project_name}-${var.project_environment}-sql-private-endpoint"

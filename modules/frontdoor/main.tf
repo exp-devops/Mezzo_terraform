@@ -127,7 +127,7 @@ resource "azurerm_cdn_frontdoor_route" "route-admin" {
 resource "azurerm_cdn_frontdoor_custom_domain" "admin_custom_domain" {
   name                     = "${var.project_name}-${var.project_environment}-admin-custom-domains"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-profile-admin.id
-  host_name                = "mezzo-development-admin.experionglobal.dev"  # Replace with your subdomain
+  host_name                ="mezzo-development-admin.experionglobal.dev" #"cnb-dev-ap.dev.teammezzo.com"  Replace with your subdomain
 
   tls {
     certificate_type = "ManagedCertificate"
@@ -160,9 +160,10 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-borrower" {
   session_affinity_enabled            = false
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 10
   health_probe {
-    interval_in_seconds                = 30
+    interval_in_seconds                = 100
     protocol                           = "Https"
     path                               = "/"
+    request_type                       = "GET"
   }
   load_balancing {
     sample_size                        = 4             # Number of samples for latency measurement
@@ -189,7 +190,7 @@ resource "azurerm_cdn_frontdoor_origin" "origin-borrower" {
 resource "azurerm_cdn_frontdoor_custom_domain" "borrower_custom_domain" {
   name                     = "${var.project_name}-${var.project_environment}-borrower-custom-domains"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-profile-borrower.id
-  host_name                = "mezzo-development-borrower.experionglobal.dev"  # Replace with your subdomain
+  host_name                =  "mezzo-development-borrower.experionglobal.dev"#cnb-dev-bp.dev.teammezzo.com"  Replace with your subdomain
 
   tls {
     certificate_type = "ManagedCertificate"
@@ -208,6 +209,7 @@ resource "azurerm_cdn_frontdoor_route" "route-borrower" {
   patterns_to_match                    = ["/*"]
   https_redirect_enabled               = true
   link_to_default_domain               = true
+  forwarding_protocol                  = "HttpsOnly"
   cdn_frontdoor_custom_domain_ids      = [azurerm_cdn_frontdoor_custom_domain.borrower_custom_domain.id]
 }
 
@@ -239,9 +241,10 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-appgw" {
   session_affinity_enabled            = false
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 10
   health_probe {
-    interval_in_seconds                = 30
+    interval_in_seconds                = 100
     protocol                           = "Https"
     path                               = "/"
+    request_type                       = "GET"
   }
   load_balancing {
     sample_size                        = 4               # Number of samples for latency measurement
@@ -257,11 +260,11 @@ resource "azurerm_cdn_frontdoor_origin" "origin-appgw" {
   name                                 = "${var.project_name}-${var.project_environment}-appgw-origin"
   cdn_frontdoor_origin_group_id        = azurerm_cdn_frontdoor_origin_group.origin-group-appgw.id
   enabled                              = true
-  host_name                            =  var.appgw_public_ip # Replace with your backend
+  host_name                            =  var.appgw_ip # Replace with your backend
   priority                             = 1
   weight                               = 1
   certificate_name_check_enabled       = true
-  origin_host_header                   = var.appgw_public_ip 
+  origin_host_header                   = var.appgw_ip
   
 
 }
@@ -277,6 +280,7 @@ resource "azurerm_cdn_frontdoor_route" "route-appgw" {
   patterns_to_match                    = ["/*"]
   https_redirect_enabled               = true
   link_to_default_domain               = true
+  forwarding_protocol                  = "HttpsOnly"
   cdn_frontdoor_custom_domain_ids      = [azurerm_cdn_frontdoor_custom_domain.api_custom_domain.id]
   
 }

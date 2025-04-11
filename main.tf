@@ -88,7 +88,7 @@ module "frontdoor"{
   location            = var.location
   rg_mezzo            = module.rg.rg_mezzo
   tags                = var.tags 
-  appgw_public_ip     = module.aks_appgw.appgw_public_ip
+  appgw_ip            = module.aks_appgw.appgw_ip
 
   static_web_app_url_admin    = module.staticwebapps.static_web_app_url_admin
   static_web_app_url_borrower = module.staticwebapps.static_web_app_url_borrower
@@ -121,10 +121,11 @@ module "aks_appgw" {
   kubernetes_version = var.kubernetes_version
   vm_size            = var.vm_size
   aks_sku_tier       = var.aks_sku_tier
-  tenant_id          = module.keyvault.keyvault_tenant_id
-  subscription_id    = module.keyvault.keyvault_subscription_id
+  /*tenant_id          = module.keyvault.keyvault_tenant_id
+  subscription_id    = module.keyvault.keyvault_subscription_id*/
   publicsubnet1_id   = module.vnet.publicsubnet1_id
   publicsubnet2_id   = module.vnet.publicsubnet2_id
+  rg_mezzo_id        = module.rg.rg_mezzo_id
 }
 
 # Modules for Azure DevOps

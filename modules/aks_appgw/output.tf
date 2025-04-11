@@ -23,6 +23,7 @@ output "host" {
   sensitive   = true
 }
 # Output application gateway Public IP.
+/*
 output "appgw_public_ip" {
     value     = azurerm_public_ip.appgw_pip.ip_address
   
@@ -31,7 +32,7 @@ output "appgw_public_ip" {
 output "appgw_name" {
     value = azurerm_application_gateway.appgw.name
   
-}
+}*/
 
 output "aks_cluster_name" {
     value = azurerm_kubernetes_cluster.aks.name
@@ -39,5 +40,9 @@ output "aks_cluster_name" {
 
 output "aks_api_url" {
   value= azurerm_kubernetes_cluster.aks.kube_config[0].host
+  
+}
+output "appgw_ip" {
+  value = data.azurerm_public_ip.appgw_public_ip.ip_address
   
 }

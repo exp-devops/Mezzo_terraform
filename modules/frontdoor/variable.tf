@@ -34,6 +34,6 @@ variable "static_web_app_url_borrower" {
 }
 
 # The public IP address assigned to the Azure Application Gateway.
-variable "appgw_public_ip" {
+variable "appgw_ip" {
   
 }

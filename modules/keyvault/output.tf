@@ -13,10 +13,10 @@ output "vault_name" {
   description = "The Azure Key Vault Name"
   value       = azurerm_key_vault.tf_key_vault.name
 }
-
+/*
 output "keyvault_tenant_id" {
   value = azurerm_key_vault_secret.tenant_id
 }
 output "keyvault_subscription_id" {
   value = azurerm_key_vault_secret.subscription_id
-}
+}*/
