@@ -12,7 +12,7 @@ terraform {
     # Define the Azure DevOps provider for managing DevOps resources.
     azuredevops = {
       source  = "microsoft/azuredevops"
-      version = "~> 1.0.0"  
+      version = "~> 1.1.1"  
     }
   }
 

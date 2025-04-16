@@ -64,7 +64,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 data "azurerm_resource_group" "node_resource_group_mezzo" {
-  name = "MC_${var.rg_mezzo}"    
+  name = "MC_${var.rg_mezzo}"   
+  depends_on = [ azurerm_kubernetes_cluster.aks ] 
 
 }
 
@@ -78,6 +79,12 @@ data "azurerm_kubernetes_cluster" "aks_data" {
   name                = azurerm_kubernetes_cluster.aks.name
   resource_group_name = azurerm_kubernetes_cluster.aks.resource_group_name
 }
+data "azurerm_application_gateway" "appgw" {
+  name = "${var.project_name}-${var.project_environment}-appgw"
+  resource_group_name = "MC_${var.rg_mezzo}" 
+  depends_on = [ azurerm_kubernetes_cluster.aks] 
+  
+}
 
 resource "azurerm_role_assignment" "agic_network_contributor" {
   scope                = var.publicsubnet2_id
@@ -86,9 +93,17 @@ resource "azurerm_role_assignment" "agic_network_contributor" {
 }
 
 data "azurerm_public_ip" "appgw_public_ip" {
-  name = "mezzo-dev-appgw-appgwpip"
-  resource_group_name = "MC_${var.rg_mezzo}"    
+  name = "${var.project_name}-${var.project_environment}-appgw-appgwpip"
+  resource_group_name = "MC_${var.rg_mezzo}"  
+  depends_on = [azurerm_kubernetes_cluster.aks, data.azurerm_application_gateway.appgw]  
   
+}
+
+resource "kubernetes_namespace" "api_namespace" {
+  depends_on = [azurerm_kubernetes_cluster.aks]
+  metadata {
+    name = "${var.project_name}-${var.project_environment}-api" 
+  }
 }
 
 

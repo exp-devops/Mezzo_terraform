@@ -19,6 +19,13 @@ variable "tags" {
 
 }
 
+variable "resource_group_name" {
+  
+}
+variable "resource_group_id" {
+  
+}
+
 # ------ Virtual Network (VNet) ------
 # Address space for the virtual network.
 variable "vnet_address_space" { 
@@ -100,11 +107,16 @@ variable "image_tag" {
 
 }
 
-# Azure DevOps branch used for deployments.
-variable "branch" {
 
+variable "host_name_admin" {
+  
 }
-
+variable "host_name_borrower" {
+  
+}
+variable "host_name_api" {
+  
+}
 # Name of the Azure DevOps project.
 variable "azure_devops_project_name" {
 
@@ -118,5 +130,15 @@ variable "build_dir" {
   
 }
 variable "subscription_name" {
+  
+}
+# Azure DevOps branch used for deployments.
+variable "branch_admin" {
+  
+}
+variable "branch_borrower" {
+  
+}
+variable "branch_api" {
   
 }

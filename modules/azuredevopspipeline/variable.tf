@@ -13,10 +13,6 @@ variable "devopsprojectname" {
   
 }
 
-# The Git branch to be used for deployment.
-variable "branch" {
-  
-}
 
 # The name of the Azure Container Registry (ACR) where images will be stored.
 variable "acr_name" {
@@ -76,5 +72,29 @@ variable "aks_cluster_name" {
   
 }
 variable "subscription_name" {
+  
+}
+variable "sql_db_name" {
+  
+}
+variable "sql_private_endpoint" {
+  
+}
+variable "sql_username" {
+  
+}
+variable "sql_password" {
+  
+}
+
+# The Git branch to be used for deployment.
+
+variable "branch_admin" {
+  
+}
+variable "branch_borrower" {
+  
+}
+variable "branch_api" {
   
 }

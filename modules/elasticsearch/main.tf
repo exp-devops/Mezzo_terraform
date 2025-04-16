@@ -2,7 +2,7 @@
 locals {
   common_tags                = var.tags
 }
-
+/*
 # Deploys an Elastic Cloud Elasticsearch instance for log analytics and search capabilities
 resource "azurerm_elastic_cloud_elasticsearch" "mezzo" {
   name                        = "${var.project_name}-${var.project_environment}-elasticsearch"   
@@ -19,4 +19,4 @@ resource "azurerm_elastic_cloud_elasticsearch" "mezzo" {
     send_azuread_logs         = true                                                                 
     send_subscription_logs    = true                                                               
 }
-}
+}*/

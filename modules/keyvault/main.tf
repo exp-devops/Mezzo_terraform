@@ -10,7 +10,7 @@ data "azurerm_client_config" "current" {
 # An Azure Key Vault for securely storing secrets, keys, and certificates
 resource "azurerm_key_vault" "tf_key_vault" {
   location                        = var.location                                                  
-  name                            = "${var.project_name}-${var.project_environment}-key-vault"     
+  name                            = "${var.project_name}-${var.project_environment}-vault"     
   resource_group_name             = var.rg_mezzo                                                  
   sku_name                        = "standard"                                                    
   tenant_id                       = data.azurerm_client_config.current.tenant_id                  
@@ -18,7 +18,7 @@ resource "azurerm_key_vault" "tf_key_vault" {
   enabled_for_deployment          = true
   enabled_for_template_deployment = true
   tags = merge(
-    local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-keyvault"}         
+    local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-vault"}         
   )
  
   # Configures access policies for the current user/service principal

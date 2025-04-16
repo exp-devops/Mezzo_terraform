@@ -42,6 +42,7 @@ resource "azurerm_subnet" "tf_private_zone2" {
   address_prefixes     = var.subnet_cidr["SUBNET_04"]
 }
 # Nat Public IP 1
+/*
 resource "azurerm_public_ip" "tf_nat_ip_1" {
   name                = "${var.project_name}-${var.project_environment}-nat-ip-1"
   location            = var.location
@@ -109,5 +110,5 @@ resource "azurerm_subnet_nat_gateway_association" "private_subnet1_natgw" {
 resource "azurerm_subnet_nat_gateway_association" "private_subnet2_natgw" {
   subnet_id      = azurerm_subnet.tf_private_zone2.id
   nat_gateway_id = azurerm_nat_gateway.tf_azurerm_nat_gateway2.id
-}
+}*/
 

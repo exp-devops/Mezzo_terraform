@@ -37,3 +37,14 @@ variable "static_web_app_url_borrower" {
 variable "appgw_ip" {
   
 }
+
+variable "host_name_admin" {
+  
+}
+
+variable "host_name_borrower" {
+  
+}
+variable "host_name_api" {
+  
+}

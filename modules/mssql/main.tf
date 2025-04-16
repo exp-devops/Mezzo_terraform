@@ -18,6 +18,7 @@ resource "azurerm_mssql_server" "sql_server" {
   version                      = "12.0"
   administrator_login          = "sqladminuser"
   administrator_login_password = random_password.sql_password.result
+  public_network_access_enabled = true
 
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-sql-server"}

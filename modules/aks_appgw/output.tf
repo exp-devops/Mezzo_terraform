@@ -39,7 +39,7 @@ output "aks_cluster_name" {
 }
 
 output "aks_api_url" {
-  value= azurerm_kubernetes_cluster.aks.kube_config[0].host
+  value= azurerm_kubernetes_cluster.aks.fqdn
   
 }
 output "appgw_ip" {

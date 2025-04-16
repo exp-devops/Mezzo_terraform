@@ -30,6 +30,21 @@ resource "azuredevops_pipeline_authorization" "acr_service_connection_permission
   resource_id = azuredevops_serviceendpoint_dockerregistry.acr_service_connection.id  # The ID of the Docker registry service connection
   type        = "endpoint"                                          # The type of resource being authorized, "endpoint" is for service connections
 }/*
+resource "azuredevops_serviceendpoint_azurerm" "aks_connection" {
+  project_id            = data.azuredevops_project.CNB-project.id
+  service_endpoint_name = "${var.project_name}-${var.project_environment}-aks-connection"
+  description           = "AzureRM connection for AKS (no service principal)"
+
+  azurerm_spn_tenantid       = data.azurerm_client_config.current.tenant_id
+  azurerm_subscription_id    = data.azurerm_client_config.current.subscription_id
+  azurerm_subscription_name  = var.subscription_name
+}
+resource "azuredevops_pipeline_authorization" "authorize_aks" {
+  project_id  = data.azuredevops_project.CNB-project.id
+  resource_id = azuredevops_serviceendpoint_azurerm.aks_connection.id
+  type        = "endpoint"
+}*/
+/*
 resource "azuredevops_serviceendpoint_kubernetes" "aks_service_connection" {
   project_id            = data.azuredevops_project.CNB-project.id    
   service_endpoint_name = "dev"
@@ -49,13 +64,13 @@ resource "azuredevops_pipeline_authorization" "aks_service_connection_permission
   project_id  = data.azuredevops_project.CNB-project.id                      # The ID of the Azure DevOps project
   resource_id = azuredevops_serviceendpoint_kubernetes.aks_service_connection.id  # The ID of the Docker registry service connection
   type        = "endpoint"                                          # The type of resource being authorized, "endpoint" is for service connections
-}*/
+}
 
-/*
+
 resource "azuredevops_serviceendpoint_kubernetes" "aks_service_connection" {
   project_id            = data.azuredevops_project.CNB-project.id
   service_endpoint_name = "${var.project_name}-${var.project_environment}-aks-service-connection"
-  apiserver_url         = var.aks_api_url
+  apiserver_url         = "https://${var.aks_api_url}"
   authorization_type    = "AzureSubscription"
 
   azure_subscription {
@@ -88,7 +103,7 @@ resource "azuredevops_build_definition" "aks_pipeline" {
     repo_type             = "GitHub"  
     #repo_id              = "meezo-kevin/mezzocicdtesting-terraform"
     repo_id               = "Mezzo-CityNational/core-service"
-    branch_name           = "refs/heads/Nirupama-Suresh-patch-3"
+    branch_name           = "refs/heads/${var.branch_api}"
     yml_path              = "azure-pipeline.yml"
     service_connection_id = var.github_service_connection  # Connect to GitHub token
   }
@@ -126,12 +141,9 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     value = var.image_tag
   }
   variable {
-    name  = "PROJECT_NAME"
-    value = var.project_name
-  }
-  variable {
-    name  = "PROJECT_ENVIRONMENT"
-    value = var.project_environment
+    name  = "ConnectionStrings__DbConnection"
+    secret_value = "Data Source= ${var.sql_private_endpoint};Initial Catalog=${var.sql_db_name} ;Integrated Security =False; UID=${var.sql_username}; Password=${var.sql_password};MultipleActiveResultSets=true"
+    is_secret    = true
   }
   variable {
     name  = "ACR-SERVICE-CONNECTION"
@@ -157,7 +169,7 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     repo_type             = "GitHub"  
     #repo_id              = "meezo-kevin/mezzocicdtesting-terraform"
     repo_id               = "Mezzo-CityNational/admin-portal"
-    branch_name           = "refs/heads/main"
+    branch_name           = "refs/heads/${var.branch_admin}"
     yml_path              = "azure-pipelines.yml"
     service_connection_id = var.github_service_connection  # Connect to GitHub token
     
@@ -204,7 +216,7 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     repo_type             = "GitHub"  
     #repo_id              = "meezo-kevin/mezzocicdtesting-terraform"
     repo_id               = "Mezzo-CityNational/borrower-portal"
-    branch_name           = "refs/heads/main"
+    branch_name           = "refs/heads/${var.branch_borrower}"
     yml_path              = "azure-pipelines.yml"
     service_connection_id = var.github_service_connection  # Connect to GitHub token
     

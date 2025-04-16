@@ -2,11 +2,14 @@ project_name           = "mezzo"
 project_environment    = "dev"
 location               = "eastus2"
 
+resource_group_name    = "CNB_DEV"
+resource_group_id      = "/subscriptions/ef370afa-d8de-4af2-a91d-7be5a40ab513/resourceGroups/CNB_DEV"
+
 tags = {
   "Project"            = "mezzo"
-  "Environment"        = "dev"
+  "Environment"        = "development"
   "Description"        = "By Terraform"
-  "Product"     = "mezzo"
+  "Product"            = "mezzo"
 }
 #vnet
 vnet_address_space = ["10.1.0.0/16"]
@@ -18,9 +21,9 @@ subnet_cidr = {
 }
 #mssql
 version = 15.0
-max_size_gb = 10
-sql_sku_name = "HS_Gen5_2"
-
+max_size_gb = 2
+#sql_sku_name = "HS_Gen5_2"
+sql_sku_name  = "Basic"
 #aks
 nodepool1-maxcount = 2
 nodepool1-mincount = 1
@@ -44,7 +47,7 @@ image_name = "core-service"
   
 
 image_tag = "latest"
-branch = "Nirupama-Suresh-patch-3"
+#branch = "Nirupama-Suresh-patch-3"
   
 azure_devops_project_name = "CNB"
 
@@ -53,3 +56,11 @@ github_service_connection = "6ad1ec3c-d90f-420c-b4dc-73147d178394"
 build_dir = "dist"
 
 subscription_name = "cnb_dev"
+
+branch_admin = "main"
+branch_borrower = "main"
+branch_api = "main"
+
+host_name_admin = "cnb-dev-ap.dev.teammezzo.com"
+host_name_borrower = "cnb-dev-bp.dev.teammezzo.com"
+host_name_api = "mezzo-dev-api.experionglobal.com"
