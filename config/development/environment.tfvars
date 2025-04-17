@@ -63,4 +63,4 @@ branch_api = "main"
 
 host_name_admin = "cnb-dev-ap.dev.teammezzo.com"
 host_name_borrower = "cnb-dev-bp.dev.teammezzo.com"
-host_name_api = "mezzo-dev-api.experionglobal.com"
+host_name_api = "mezzo-dev-api.experionglobal.dev"

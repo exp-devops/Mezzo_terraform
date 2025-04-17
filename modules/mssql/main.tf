@@ -18,7 +18,7 @@ resource "azurerm_mssql_server" "sql_server" {
   version                      = "12.0"
   administrator_login          = "sqladminuser"
   administrator_login_password = random_password.sql_password.result
-  public_network_access_enabled = true
+  public_network_access_enabled = false
 
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-sql-server"}
@@ -90,4 +90,12 @@ resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
   start_ip_address = "0.0.0.0"
   end_ip_address   = "0.0.0.0"
 }
+resource "azurerm_private_dns_a_record" "sql_private_dns_a_record" {
+  name                = azurerm_mssql_server.sql_server.name # example: mydbserver
+  zone_name           = azurerm_private_dns_zone.sql_dns_zone.name
+  resource_group_name = var.rg_mezzo
+  ttl                 = 300
+  records             = [azurerm_private_endpoint.sql_private_endpoint.private_service_connection[0].private_ip_address]
 
+  tags = local.common_tags
+}

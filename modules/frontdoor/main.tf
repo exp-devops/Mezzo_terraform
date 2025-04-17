@@ -264,7 +264,7 @@ resource "azurerm_cdn_frontdoor_route" "route-api" {
   cdn_frontdoor_origin_group_id        = azurerm_cdn_frontdoor_origin_group.origin-group-api.id
   cdn_frontdoor_origin_ids             = [azurerm_cdn_frontdoor_origin.origin-api.id]
   supported_protocols                  = ["Http", "Https"]
-  patterns_to_match                    = ["/api/*"]
+  patterns_to_match                    = ["/api/pricing/scenario/*"]
   https_redirect_enabled               = true
   link_to_default_domain               = true
   forwarding_protocol                  = "MatchRequest"
