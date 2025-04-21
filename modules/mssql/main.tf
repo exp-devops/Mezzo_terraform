@@ -18,7 +18,7 @@ resource "azurerm_mssql_server" "sql_server" {
   version                      = "12.0"
   administrator_login          = "sqladminuser"
   administrator_login_password = random_password.sql_password.result
-  public_network_access_enabled = false
+  public_network_access_enabled = true
 
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-sql-server"}
@@ -45,7 +45,7 @@ resource "azurerm_mssql_database" "sql_database" {
 
 resource "azurerm_key_vault_secret" "sql_password_secret" {
   depends_on   = [azurerm_mssql_server.sql_server]
-  name         = "${var.project_name}-${var.project_environment}-sql-password-secret"
+  name         = "${var.project_name}-${var.project_environment}-mssql-password-secret"
   value        = random_password.sql_password.result
   key_vault_id = var.vault_id
 }

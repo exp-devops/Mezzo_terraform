@@ -13,3 +13,7 @@ output "sql_db_name" {
     value = azurerm_mssql_database.sql_database.name
   
 }
+output "sql-server-name" {
+    value = azurerm_mssql_server.sql_server.name
+  
+}

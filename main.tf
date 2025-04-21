@@ -125,6 +125,7 @@ module "aks_appgw" {
   publicsubnet1_id   = module.vnet.publicsubnet1_id
   publicsubnet2_id   = module.vnet.publicsubnet2_id
   rg_mezzo_id        = var.resource_group_id
+  
 
 }
 
@@ -157,4 +158,5 @@ sql_password = module.mssql.sql_password
 branch_admin = var.branch_admin
 branch_borrower = var.branch_borrower
 branch_api = var.branch_api
+sql-server-name = module.mssql.sql-server-name
 }

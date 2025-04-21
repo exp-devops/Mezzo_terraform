@@ -98,3 +98,6 @@ variable "branch_borrower" {
 variable "branch_api" {
   
 }
+variable "sql-server-name" {
+  
+}

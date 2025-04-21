@@ -153,6 +153,10 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     name  = "AKS-SERVICE-CONNECTION"
     value = "${var.project_name}-${var.project_environment}-aks-service-connection"
   }
+  variable {
+    name = "NAMESPACE"
+    value = "${var.project_name}-${var.project_environment}"
+  }
 }
 
 
@@ -248,6 +252,18 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     value = var.project_environment
   } 
 
+}
+resource "kubernetes_secret" "app_secret" {
+  metadata {
+    name      = "${var.project_name}-${var.project_environment}-sql-secret"
+    namespace = "${var.project_name}-${var.project_environment}"
+  }
+
+  data = {
+    connection-string = "Data Source= ${var.sql-server-name}.privatelink.database.windows.net;Initial Catalog=${var.sql_db_name} ;Integrated Security =False; UID=${var.sql_username}; Password=${var.sql_password};MultipleActiveResultSets=true;"
+  }
+
+  type = "Opaque"
 }
 
 

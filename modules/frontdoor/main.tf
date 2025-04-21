@@ -213,6 +213,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "borrower_portal_custom_domain" {
 
 
 # ------Application Gateway----------
+
 resource "azurerm_cdn_frontdoor_endpoint" "frontdoor-endpoint-api" {
 name                                  = "${var.project_name}-${var.project_environment}-api-endpoint"
 cdn_frontdoor_profile_id              = azurerm_cdn_frontdoor_profile.frontdoor-profile.id

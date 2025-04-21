@@ -15,6 +15,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-aks-cluster"}             
   )
+
 # Default node pool
   default_node_pool {
     name                           = "${var.project_name}${var.project_environment}1"                   # Unique name for the node pool
@@ -98,6 +99,15 @@ data "azurerm_public_ip" "appgw_public_ip" {
   depends_on = [azurerm_kubernetes_cluster.aks, data.azurerm_application_gateway.appgw]  
   
 }
+
+resource "kubernetes_namespace" "api_namespace" {
+  depends_on = [azurerm_kubernetes_cluster.aks]
+  metadata {
+    name = "${var.project_name}-${var.project_environment}"
+  }
+}
+ 
+
 /*
 resource "kubernetes_namespace" "api_namespace" {
   depends_on = [azurerm_kubernetes_cluster.aks]
