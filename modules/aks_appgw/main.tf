@@ -57,7 +57,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
  
   ingress_application_gateway {
     
-    gateway_name = "${var.project_name}-${var.project_environment}-appgw"
+    gateway_name = "${var.project_name}-${var.project_environment}-appgateway"
     subnet_id  = var.publicsubnet2_id
     
   
@@ -81,9 +81,9 @@ data "azurerm_kubernetes_cluster" "aks_data" {
   resource_group_name = azurerm_kubernetes_cluster.aks.resource_group_name
 }
 data "azurerm_application_gateway" "appgw" {
-  name = "${var.project_name}-${var.project_environment}-appgw"
+  name = "${var.project_name}-${var.project_environment}-appgateway"
   resource_group_name = "MC_${var.rg_mezzo}" 
-  depends_on = [ azurerm_kubernetes_cluster.aks] 
+  depends_on = [ azurerm_kubernetes_cluster.aks, azurerm_role_assignment.agic_network_contributor] 
   
 }
 
@@ -94,7 +94,7 @@ resource "azurerm_role_assignment" "agic_network_contributor" {
 }
 
 data "azurerm_public_ip" "appgw_public_ip" {
-  name = "${var.project_name}-${var.project_environment}-appgw-appgwpip"
+  name = "${var.project_name}-${var.project_environment}-appgateway-appgwpip"
   resource_group_name = "MC_${var.rg_mezzo}"  
   depends_on = [azurerm_kubernetes_cluster.aks, data.azurerm_application_gateway.appgw]  
   

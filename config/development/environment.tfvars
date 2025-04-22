@@ -59,8 +59,8 @@ subscription_name = "cnb_dev"
 
 branch_admin = "main"
 branch_borrower = "main"
-branch_api = "main"
+branch_api = "Development-mezzo"
 
 host_name_admin = "cnb-dev-ap.dev.teammezzo.com"
 host_name_borrower = "cnb-dev-bp.dev.teammezzo.com"
-host_name_api = "mezzo-dev-api.experionglobal.dev"
+host_name_api = "cnb-posapi.dev.teammezzo.com"
