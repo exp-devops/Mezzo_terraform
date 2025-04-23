@@ -140,11 +140,12 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     name  = "IMAGE_TAG"
     value = var.image_tag
   }
+  /*
   variable {
     name  = "ConnectionStrings__DbConnection"
     secret_value = "Data Source= ${var.sql_private_endpoint};Initial Catalog=${var.sql_db_name} ;Integrated Security =False; UID=${var.sql_username}; Password=${var.sql_password};MultipleActiveResultSets=true"
     is_secret    = true
-  }
+  }*/
   variable {
     name  = "ACR-SERVICE-CONNECTION"
     value = "${var.project_name}-${var.project_environment}-acr-service-connection"
@@ -252,7 +253,7 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     value = var.project_environment
   } 
 
-}
+}/*
 resource "kubernetes_secret" "app_secret" {
   metadata {
     name      = "${var.project_name}-${var.project_environment}-sql-secret"
@@ -264,7 +265,7 @@ resource "kubernetes_secret" "app_secret" {
   }
 
   type = "Opaque"
-}
+}*/
 
 
 

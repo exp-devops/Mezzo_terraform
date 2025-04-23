@@ -74,18 +74,7 @@ variable "aks_cluster_name" {
 variable "subscription_name" {
   
 }
-variable "sql_db_name" {
-  
-}
-variable "sql_private_endpoint" {
-  
-}
-variable "sql_username" {
-  
-}
-variable "sql_password" {
-  
-}
+
 
 # The Git branch to be used for deployment.
 
@@ -96,8 +85,5 @@ variable "branch_borrower" {
   
 }
 variable "branch_api" {
-  
-}
-variable "sql-server-name" {
   
 }

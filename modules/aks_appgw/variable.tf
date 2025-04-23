@@ -75,5 +75,8 @@ variable "acr_id" {
 variable "rg_mezzo_id" {
   
 }
+variable "vault_id" {
+  
+}
 
 

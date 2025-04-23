@@ -130,10 +130,10 @@ resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy" {
     domain {
       cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.frontdoor-endpoint-borrower-portal.id
     }
-/*
+
     domain {
       cdn_frontdoor_domain_id = azurerm_cdn_frontdoor_endpoint.frontdoor-endpoint-api.id
-    }*/
+    }
         patterns_to_match              = ["/*"]
       }
     }
@@ -229,13 +229,13 @@ resource "azurerm_cdn_frontdoor_origin_group" "origin-group-api" {
   cdn_frontdoor_profile_id            = azurerm_cdn_frontdoor_profile.frontdoor-profile.id
   session_affinity_enabled            = false
   restore_traffic_time_to_healed_or_new_endpoint_in_minutes = 10
-  /*
+  
   health_probe {
     interval_in_seconds                = 100
     protocol                           = "Http"
-    path                               = "/"
+    path                               = "/api/heartbeat"
     request_type                       = "GET"
-  }*/
+  }
   load_balancing {
     sample_size                        = 4            # Number of samples for latency measurement
     successful_samples_required        = 3            # Required successful samples for an origin to be considered healthy
@@ -266,10 +266,10 @@ resource "azurerm_cdn_frontdoor_route" "route-api" {
   cdn_frontdoor_origin_group_id        = azurerm_cdn_frontdoor_origin_group.origin-group-api.id
   cdn_frontdoor_origin_ids             = [azurerm_cdn_frontdoor_origin.origin-api.id]
   supported_protocols                  = ["Http", "Https"]
-  patterns_to_match                    = ["/*"]
-  https_redirect_enabled               = true
+  patterns_to_match                    = ["/api/*"]
+  https_redirect_enabled               = false
   link_to_default_domain               = true
-  forwarding_protocol                  = "MatchRequest"
+  forwarding_protocol                  = "HttpOnly"
   cdn_frontdoor_custom_domain_ids      = [azurerm_cdn_frontdoor_custom_domain.api_aks_custom_domain.id]
 
 }

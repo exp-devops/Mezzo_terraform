@@ -125,6 +125,7 @@ module "aks_appgw" {
   publicsubnet1_id   = module.vnet.publicsubnet1_id
   publicsubnet2_id   = module.vnet.publicsubnet2_id
   rg_mezzo_id        = var.resource_group_id
+  vault_id             = module.keyvault.vault_id
   
 
 }
@@ -151,12 +152,7 @@ module "azuredevopspipeline"{
   aks_cluster_name   = module.aks_appgw.aks_cluster_name
   rg_mezzo_id        = var.resource_group_id
   subscription_name  =var.subscription_name
- sql_db_name        = module.mssql.sql_db_name
-sql_private_endpoint = module.mssql.sql_private_endpoint
-sql_username = module.mssql.sql_username
-sql_password = module.mssql.sql_password
 branch_admin = var.branch_admin
 branch_borrower = var.branch_borrower
 branch_api = var.branch_api
-sql-server-name = module.mssql.sql-server-name
 }

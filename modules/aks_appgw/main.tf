@@ -106,6 +106,30 @@ resource "kubernetes_namespace" "api_namespace" {
     name = "${var.project_name}-${var.project_environment}"
   }
 }
+
+resource "azurerm_key_vault_access_policy" "aks" {
+  key_vault_id = var.vault_id
+
+  tenant_id = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
+  object_id = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+
+  secret_permissions           = ["List", "Set", "Get", "Delete", "Purge", "Recover"]           # Permissions for managing secrets
+    certificate_permissions      = ["Create", "Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
+
+    key_permissions              = [                                                              # Permissions for managing encryption keys and rotation policies
+      "Create",
+      "Delete",
+      "Get",
+      "Purge",
+      "Recover",
+      "Update",
+      "GetRotationPolicy",
+      "SetRotationPolicy",
+      "List"
+    ]
+
+}
+
  
 
 /*

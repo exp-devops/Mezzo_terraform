@@ -25,7 +25,7 @@ max_size_gb = 2
 #sql_sku_name = "HS_Gen5_2"
 sql_sku_name  = "Basic"
 #aks
-nodepool1-maxcount = 2
+nodepool1-maxcount = 1
 nodepool1-mincount = 1
 kubernetes_version = "1.31.7" 
 #kubernetes_version  = "1.28.3"
@@ -59,7 +59,7 @@ subscription_name = "cnb_dev"
 
 branch_admin = "main"
 branch_borrower = "main"
-branch_api = "Development-mezzo"
+branch_api = "main"
 
 host_name_admin = "cnb-dev-ap.dev.teammezzo.com"
 host_name_borrower = "cnb-dev-bp.dev.teammezzo.com"

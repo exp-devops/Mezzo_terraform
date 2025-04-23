@@ -49,6 +49,13 @@ resource "azurerm_key_vault_secret" "sql_password_secret" {
   value        = random_password.sql_password.result
   key_vault_id = var.vault_id
 }
+
+resource "azurerm_key_vault_secret" "sql_connection_string" {
+  depends_on   = [azurerm_mssql_server.sql_server]
+  name         = "connectionstrings--defaultconnection"
+  value        = "Data Source= ${azurerm_mssql_server.sql_server.name}.privatelink.database.windows.net;Initial Catalog=${azurerm_mssql_database.sql_database.name} ;Integrated Security =False; UID=${azurerm_mssql_server.sql_server.administrator_login}; Password=${azurerm_mssql_server.sql_server.administrator_login_password};MultipleActiveResultSets=true;"
+  key_vault_id = var.vault_id
+}
 # Create a private endpoint for the Azure SQL Server to enable private access.
 resource "azurerm_private_endpoint" "sql_private_endpoint" {
   name                = "${var.project_name}-${var.project_environment}-sql-private-endpoint"
