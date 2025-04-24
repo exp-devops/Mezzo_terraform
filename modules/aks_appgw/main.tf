@@ -129,9 +129,185 @@ resource "azurerm_key_vault_access_policy" "aks" {
     ]
 
 }
+/*
+
+data "external" "vmss_names" {
+  program = [
+    "bash", "${path.module}/fetch_vmss.sh", "${azurerm_kubernetes_cluster.aks.name}", "${var.rg_mezzo}" # Adjust as per your setup
+  ]
+}
+data "azurerm_virtual_machine_scale_set" "vmss" {
+  for_each = toset(compact(split(" ", data.external.vmss_names.result["vmss_names"])))
+
+  name                = each.value
+  resource_group_name = var.rg_mezzo
+}
+
+resource "azurerm_key_vault_access_policy" "vmss_identity" {
+  for_each     = data.azurerm_virtual_machine_scale_set.vmss
+
+  key_vault_id = var.vault_id
+  tenant_id    = data.azurerm_kubernetes_cluster.aks_data.identity[0].tenant_id
+  object_id    = each.value.identity[0].principal_id
+
+  secret_permissions = ["Get", "List"]
+}*/
+/*
+data "azurerm_virtual_machine_scale_set" "vmss" {
+  for_each = {
+    for ss in data.azurerm_virtual_machine_scale_sets.all.ids : ss => ss
+    if can(regex("aks-mezzodev1-.*-vmss", ss))
+  }
+ 
+  name                = each.key
+  resource_group_name = data.azurerm_kubernetes_cluster.aks_data.node_resource_group
+}
+data "azurerm_virtual_machine_scale_set" "all" {
+  resource_group_name = data.azurerm_kubernetes_cluster.aks_data.node_resource_group
+}
+
+resource "azurerm_key_vault_access_policy" "vmss_identity" {
+  key_vault_id = var.vault_id
+
+  tenant_id = data.azurerm_kubernetes_cluster.aks_data.identity[0].tenant_id
+  object_id = data.azurerm_virtual_machine_scale_set.vmss.id
+  secret_permissions = ["Get", "List"]
+}*/
+/*
+data "azurerm_virtual_machine_scale_set" "mezzodev1" {
+name                = "aks-mezzodev1-28770114-vmss"
+resource_group_name = var.rg_mezzo
+}
+
+#Create Key Vault Access Policy for VMSS (Managed Identity)
+resource "azurerm_key_vault_access_policy" "vmss_identity" {
+  key_vault_id = var.vault_id
+
+  tenant_id = data.azurerm_kubernetes_cluster.aks_data.identity[0].tenant_id
+  object_id = data.azurerm_virtual_machine_scale_set.aks_vmss.identity[0].principal_id
+
+  secret_permissions = ["Get", "List"]
+}*/
+ 
+/*
+resource "null_resource" "assign_identity_to_vmss" {
+  provisioner "local-exec" {
+    command = <<EOT
+      VMSS_NAME=$(az vmss list --resource-group ${data.azurerm_kubernetes_cluster.aks_data.node_resource_group} --query "[0].name" -o tsv)
+      echo "Detected VMSS: $VMSS_NAME"
+      az vmss identity assign \
+        --resource-group ${data.azurerm_kubernetes_cluster.aks_data.node_resource_group} \
+        --name $VMSS_NAME
+      az vmss show \
+        --resource-group ${} \
+        --name $VMSS_NAME \
+        --query "identity.principalId" -o tsv > principal_id.txt
+      az vmss show \
+        --resource-group ${data.azurerm_kubernetes_cluster.aks_data.node_resource_group} \
+        --name $VMSS_NAME \
+        --query "identity.tenantId" -o tsv > tenant_id.txt
+    EOT
+    interpreter = ["bash", "-c"]
+  }
+}
+data "external" "vmss_identity" {
+  depends_on = [null_resource.assign_identity_to_vmss]
+  program = ["bash", "-c", <<EOT
+    echo "{\"object_id\": \"$(cat principal_id.txt)\", \"tenant_id\": \"$(cat tenant_id.txt)\"}"
+  EOT
+  ]
+}
+resource "azurerm_key_vault_access_policy" "vmss_access" {
+  key_vault_id = var.vault_id
+  tenant_id    = data.external.vmss_identity.result.tenant_id
+  object_id    = data.external.vmss_identity.result.object_id
+
+  secret_permissions = ["Get", "List"]
+}
+
+/*
+resource "azurerm_key_vault_access_policy" "aks_kubelet" {
+  key_vault_id = var.vault_id
+
+  tenant_id = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
+  object_id = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+
+  secret_permissions = ["Get", "List"]
+}
+
+data "azurerm_kubernetes_cluster_node_pool" "aks_nodepool" {
+  name                 = "${var.project_name}${var.project_environment}1"
+  resource_group_name = "${var.rg_mezzo}" 
+  kubernetes_cluster_name = data.azurerm_kubernetes_cluster.aks_data.name
+  depends_on = [ azurerm_kubernetes_cluster.aks ] 
+  
+}
+
+
+
+# Key Vault access policy for AKS kubelet identity
+resource "azurerm_key_vault_access_policy" "aks_kubelet_policy" {
+  key_vault_id = var.vault_id
+
+  tenant_id = data.azurerm_kubernetes_cluster.aks_data.identity[0].tenant_id
+  object_id = data.azurerm_kubernetes_cluster.aks_data.kubelet_identity[0].object_id
+
+  secret_permissions = ["Get", "List"]
+  depends_on = [ azurerm_kubernetes_cluster.aks ] 
+}
+
+
+data "azurerm_virtual_machine_scale_set" "aks_vmss" {
+ name = 
+  resource_group_name = "${var.rg_mezzo}" 
+}
+
+# Create Key Vault Access Policy for VMSS (Managed Identity)
+resource "azurerm_key_vault_access_policy" "vmss_identity" {
+  key_vault_id = var.vault_id
+
+  tenant_id = data.azurerm_kubernetes_cluster.aks_data.identity[0].tenant_id
+  object_id = data.azurerm_virtual_machine_scale_set.aks_vmss.identity[0].principal_id
+
+  secret_permissions = ["Get", "List"]
+}*/
+/*
+data "azapi_resources" "aks_vmss" {
+  type                   = "Microsoft.Compute/virtualMachineScaleSets@2021-11-01"
+  parent_id              = data.azurerm_resource_group.node_resource_group.id
+  response_export_values = ["name"]
+}
+locals {
+  aks_vmss_name = one(data.azapi_resources.aks_vmss.output).name
+}
+
+resource "null_resource" "enable_vmss_identity" {
+  provisioner "local-exec" {
+    command = <<EOT
+      az vmss identity assign \
+        --resource-group ${data.azurerm_resource_group.node_resource_group.name} \
+        --name ${local.aks_vmss_name}
+    EOT
+  }
+  depends_on = [data.azapi_resources.aks_vmss]
+}
+
+data "azurerm_virtual_machine_scale_set" "aks_vmss" {
+  name                = local.aks_vmss_name
+  resource_group_name = data.azurerm_resource_group.node_resource_group.name
+  depends_on          = [null_resource.enable_vmss_identity]
+}
+
+resource "azurerm_key_vault_access_policy" "vmss_identity" {
+  key_vault_id = var.vault_id
+  tenant_id    = data.azurerm_virtual_machine_scale_set.aks_vmss.identity[0].tenant_id
+  object_id    = data.azurerm_virtual_machine_scale_set.aks_vmss.identity[0].principal_id
+
+  secret_permissions = ["Get", "List"]
+}
 
  
-
+*/
 /*
 resource "kubernetes_namespace" "api_namespace" {
   depends_on = [azurerm_kubernetes_cluster.aks]

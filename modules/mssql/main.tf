@@ -52,7 +52,7 @@ resource "azurerm_key_vault_secret" "sql_password_secret" {
 
 resource "azurerm_key_vault_secret" "sql_connection_string" {
   depends_on   = [azurerm_mssql_server.sql_server]
-  name         = "connectionstrings--defaultconnection"
+  name         = "ConnectionStrings--DefaultConnection"
   value        = "Data Source= ${azurerm_mssql_server.sql_server.name}.privatelink.database.windows.net;Initial Catalog=${azurerm_mssql_database.sql_database.name} ;Integrated Security =False; UID=${azurerm_mssql_server.sql_server.administrator_login}; Password=${azurerm_mssql_server.sql_server.administrator_login_password};MultipleActiveResultSets=true;"
   key_vault_id = var.vault_id
 }
