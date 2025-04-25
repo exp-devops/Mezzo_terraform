@@ -114,7 +114,7 @@ resource "azurerm_key_vault_access_policy" "aks" {
   object_id = azurerm_kubernetes_cluster.aks.identity[0].principal_id
 
   secret_permissions           = ["List", "Set", "Get", "Delete", "Purge", "Recover"]           # Permissions for managing secrets
-    certificate_permissions      = ["Create", "Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
+    certificate_permissions      = ["Create","Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
 
     key_permissions              = [                                                              # Permissions for managing encryption keys and rotation policies
       "Create",
@@ -129,6 +129,17 @@ resource "azurerm_key_vault_access_policy" "aks" {
     ]
 
 }
+/*
+resource azurerm_role_assignment "keyvault_reader" {
+  scope                = var.vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = data.azurerm_kubernetes_cluster.aks_data.kubelet_identity[0].object_id
+}*/
+  
+
+
+
+
 /*
 
 data "external" "vmss_names" {
