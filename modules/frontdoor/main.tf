@@ -4,7 +4,7 @@ locals {
 }
 
 
-
+# WAF policyy
 resource "azurerm_cdn_frontdoor_firewall_policy" "waf_policy" {
 name                      = "${var.project_name}${var.project_environment}wafpolicy"
 resource_group_name       = var.rg_mezzo
@@ -35,6 +35,8 @@ custom_rule {
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-waf-policy"}
   )
 }
+
+ # Front door profile 
 
 resource "azurerm_cdn_frontdoor_profile" "frontdoor-profile"{
 name                                  = "${var.project_name}-${var.project_environment}-front-door-profile"
@@ -103,7 +105,7 @@ resource "azurerm_cdn_frontdoor_route" "route-admin-portal" {
   cdn_frontdoor_custom_domain_ids      = [azurerm_cdn_frontdoor_custom_domain.admin_portal_custom_domain.id]
 
 }
-
+# Custom domain for admin portal
 resource "azurerm_cdn_frontdoor_custom_domain" "admin_portal_custom_domain" {
   name                     = "${var.project_name}-${var.project_environment}-admin-custom-domains"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-profile.id
@@ -113,7 +115,7 @@ resource "azurerm_cdn_frontdoor_custom_domain" "admin_portal_custom_domain" {
     certificate_type = "ManagedCertificate"
   }
 }
-
+# Front door security policy
 resource "azurerm_cdn_frontdoor_security_policy" "frontdoor-security-policy" {
   name                                 = "${var.project_name}-${var.project_environment}-frontdoor-security-policy"
   cdn_frontdoor_profile_id             = azurerm_cdn_frontdoor_profile.frontdoor-profile.id
@@ -273,7 +275,7 @@ resource "azurerm_cdn_frontdoor_route" "route-api" {
   cdn_frontdoor_custom_domain_ids      = [azurerm_cdn_frontdoor_custom_domain.api_aks_custom_domain.id]
 
 }
-
+# Custom domain for api frontdoor
 resource "azurerm_cdn_frontdoor_custom_domain" "api_aks_custom_domain" {
   name                     = "${var.project_name}-${var.project_environment}-api-custom-domains"
   cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.frontdoor-profile.id

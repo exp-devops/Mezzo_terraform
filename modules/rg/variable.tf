@@ -2,7 +2,6 @@
 variable "project_name" {  
 }
 
-
 # Consider enforcing allowed values using validation.
 variable "project_environment" {  
 }

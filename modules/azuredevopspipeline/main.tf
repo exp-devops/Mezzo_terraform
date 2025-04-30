@@ -15,6 +15,7 @@ data "azurerm_client_config" "current" {
 data "azuredevops_project" "CNB-project" {
   name = var.devopsprojectname
 }
+# service connection for ACR
 resource "azuredevops_serviceendpoint_dockerregistry" "acr_service_connection" {
   project_id            = data.azuredevops_project.CNB-project.id
   service_endpoint_name = "${var.project_name}-${var.project_environment}-acr-service-connection"
@@ -25,6 +26,7 @@ resource "azuredevops_serviceendpoint_dockerregistry" "acr_service_connection" {
   description = "Service connection to mezzodevprojectacr"
  
 }
+# service connection permission for ACR
 resource "azuredevops_pipeline_authorization" "acr_service_connection_permission" {
   project_id  = data.azuredevops_project.CNB-project.id                      # The ID of the Azure DevOps project
   resource_id = azuredevops_serviceendpoint_dockerregistry.acr_service_connection.id  # The ID of the Docker registry service connection
@@ -65,7 +67,7 @@ resource "azuredevops_pipeline_authorization" "aks_service_connection_permission
   resource_id = azuredevops_serviceendpoint_kubernetes.aks_service_connection.id  # The ID of the Docker registry service connection
   type        = "endpoint"                                          # The type of resource being authorized, "endpoint" is for service connections
 }
-
+*/
 
 resource "azuredevops_serviceendpoint_kubernetes" "aks_service_connection" {
   project_id            = data.azuredevops_project.CNB-project.id
@@ -77,19 +79,21 @@ resource "azuredevops_serviceendpoint_kubernetes" "aks_service_connection" {
     subscription_id   = data.azurerm_client_config.current.subscription_id
     subscription_name = var.subscription_name
     tenant_id         = data.azurerm_client_config.current.tenant_id   
-    resourcegroup_id =  var.rg_mezzo_id
+    resourcegroup_id  =  var.rg_mezzo
     cluster_name      = var.aks_cluster_name
+    namespace         = "${var.project_name}-${var.project_environment}"
+
   }
 }
 resource "azuredevops_pipeline_authorization" "aks_service_connection_permission" {
   project_id  = data.azuredevops_project.CNB-project.id                      # The ID of the Azure DevOps project
   resource_id = azuredevops_serviceendpoint_kubernetes.aks_service_connection.id  # The ID of the Docker registry service connection
   type        = "endpoint"                                          # The type of resource being authorized, "endpoint" is for service connections
-}*/
+}
 
 
 
-#Azure Devops Pipeline for Static App
+#Azure Devops Pipeline for API
 resource "azuredevops_build_definition" "aks_pipeline" {
   project_id = data.azuredevops_project.CNB-project.id
   name       = "${var.project_name}-${var.project_environment}-aks-pipeline"
@@ -111,6 +115,7 @@ resource "azuredevops_build_definition" "aks_pipeline" {
     azuredevops_variable_group.aks_variable_group.id
   ]
 }
+# Azure Devops variable group for API
 resource "azuredevops_variable_group" "aks_variable_group" {
   project_id   = data.azuredevops_project.CNB-project.id
   name         = "${var.project_name}-${var.project_environment}-aks-variable-group"
@@ -160,7 +165,7 @@ resource "azuredevops_variable_group" "aks_variable_group" {
   }
 }
 
-
+#Azure Devops Pipeline for Admin static app.
   resource "azuredevops_build_definition" "admin_pipeline" {
   project_id = data.azuredevops_project.CNB-project.id
   name       = "${var.project_name}-${var.project_environment}-admin-static-webapps-pipeline"
@@ -183,6 +188,7 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     azuredevops_variable_group.admin_variable_group.id
   ]
   }
+  # Azure Devops variable group for Admin
   resource "azuredevops_variable_group" "admin_variable_group" {
   project_id   = data.azuredevops_project.CNB-project.id
   name         = "${var.project_name}-${var.project_environment}-admin-static-webaaps-variable-group"
@@ -207,7 +213,7 @@ resource "azuredevops_variable_group" "aks_variable_group" {
   }
 
 }
-
+# Azure Devops pipeline for borrower static app.
  resource "azuredevops_build_definition" "borrower_pipeline" {
   project_id = data.azuredevops_project.CNB-project.id
   name       = "${var.project_name}-${var.project_environment}-borrower-static-webapps-pipeline"
@@ -230,6 +236,7 @@ resource "azuredevops_variable_group" "aks_variable_group" {
     azuredevops_variable_group.borrower_variable_group.id
   ]
   }
+  # Azure Devops variable group for borrower
   resource "azuredevops_variable_group" "borrower_variable_group" {
   project_id   = data.azuredevops_project.CNB-project.id
   name         = "${var.project_name}-${var.project_environment}-borrower-static-webaaps-variable-group"

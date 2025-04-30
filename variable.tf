@@ -19,9 +19,11 @@ variable "tags" {
 
 }
 
+# Resource Group name.
 variable "resource_group_name" {
   
 }
+# Resource Group ID.
 variable "resource_group_id" {
   
 }
@@ -107,13 +109,15 @@ variable "image_tag" {
 
 }
 
-
+# Host name for admin
 variable "host_name_admin" {
   
 }
+# Host name for borrower
 variable "host_name_borrower" {
   
 }
+# Host name for API
 variable "host_name_api" {
   
 }
@@ -121,14 +125,15 @@ variable "host_name_api" {
 variable "azure_devops_project_name" {
 
 }
-
+# Service connection for github.
 variable "github_service_connection" {
   
 }
-
+# Build Directory
 variable "build_dir" {
   
 }
+# Azure Subscription name
 variable "subscription_name" {
   
 }

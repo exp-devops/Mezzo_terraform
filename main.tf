@@ -6,6 +6,7 @@
   location             = var.location
   tags                 = var.tags
 }*/
+
 # Modules for Virtual Network
 module "vnet" {
   source               = "./modules/vnet"
@@ -27,6 +28,10 @@ module "keyvault" {
   location             = var.location
   rg_mezzo             = var.resource_group_name
   tags                 = var.tags 
+  aks_secret_identity  = module.aks_appgw.aks_secret_identity
+  aks_objectid         = module.aks_appgw.aks_objectid
+  aks_tenantid         = module.aks_appgw.aks_tenantid
+  vmss_uami            = module.aks_appgw.vmss_uami
 }
 # Modules for MS SQL
 module "mssql" {
@@ -152,7 +157,8 @@ module "azuredevopspipeline"{
   aks_cluster_name   = module.aks_appgw.aks_cluster_name
   rg_mezzo_id        = var.resource_group_id
   subscription_name  =var.subscription_name
-branch_admin = var.branch_admin
-branch_borrower = var.branch_borrower
-branch_api = var.branch_api
+  branch_admin = var.branch_admin
+  branch_borrower = var.branch_borrower
+  branch_api = var.branch_api
+  
 }

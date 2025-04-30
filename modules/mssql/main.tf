@@ -97,6 +97,7 @@ resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
   start_ip_address = "0.0.0.0"
   end_ip_address   = "0.0.0.0"
 }
+# SQL private DNS record.
 resource "azurerm_private_dns_a_record" "sql_private_dns_a_record" {
   name                = azurerm_mssql_server.sql_server.name # example: mydbserver
   zone_name           = azurerm_private_dns_zone.sql_dns_zone.name

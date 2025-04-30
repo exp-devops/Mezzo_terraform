@@ -33,16 +33,30 @@ output "appgw_name" {
     value = azurerm_application_gateway.appgw.name
   
 }*/
-
+# Output of Kubernetes cluster name.
 output "aks_cluster_name" {
     value = azurerm_kubernetes_cluster.aks.name
 }
-
+# Output of Kubernetes api url.
 output "aks_api_url" {
   value= azurerm_kubernetes_cluster.aks.fqdn
   
 }
+# Output of application gateway.
 output "appgw_ip" {
   value = data.azurerm_public_ip.appgw_public_ip.ip_address
+  
+}
+output "aks_secret_identity" {
+  value = data.azurerm_kubernetes_cluster.aks_data.key_vault_secrets_provider[0].secret_identity[0].object_id
+}
+output "aks_tenantid" {
+  value = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
+}
+output "aks_objectid" {
+  value = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+}
+output "vmss_uami" {
+  value = data.azurerm_user_assigned_identity.uami.principal_id
   
 }

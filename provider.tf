@@ -16,7 +16,7 @@ terraform {
     # Define the Azure DevOps provider for managing DevOps resources.
     azuredevops = {
       source  = "microsoft/azuredevops"
-      version = "~> 1.1.1"  
+      version = "~> 1.4.0"  
     }
   }
 
@@ -47,6 +47,7 @@ provider "azuredevops" {
   org_service_url       = "https://dev.azure.com/MezzoOrg" 
   personal_access_token = var.azure_devops_pat 
 }
+
 provider "azapi" {
   # No config needed if you're using Azure CLI or service principal
 }

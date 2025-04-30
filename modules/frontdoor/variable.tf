@@ -38,14 +38,16 @@ variable "static_web_app_url_borrower" {
 variable "appgw_ip" {
   
 }
+# Front door Host name for admin
 
 variable "host_name_admin" {
   
 }
-
+# Front door Host name for Borrower
 variable "host_name_borrower" {
   
 }
+# Front door Host name for API
 variable "host_name_api" {
   
 }

@@ -11,7 +11,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   kubernetes_version               = var.kubernetes_version                                                
   sku_tier                         = var.aks_sku_tier                                                    
   private_cluster_enabled          = false                                                               
-  node_resource_group              = "MC_${var.rg_mezzo}"                                                
+  node_resource_group              = "MC_${var.rg_mezzo}"    
+                                              
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-aks-cluster"}             
   )
@@ -38,6 +39,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
   identity {
     type                           = "SystemAssigned"                                                  # Use system-assigned managed identity for authentication
   }
+   /*identity {
+    type = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.uami.id]
+  }*/
+  
 
 
   network_profile {
@@ -63,7 +69,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   
 }
 }
-
+# Node resource group
 data "azurerm_resource_group" "node_resource_group_mezzo" {
   name = "MC_${var.rg_mezzo}"   
   depends_on = [ azurerm_kubernetes_cluster.aks ] 
@@ -76,37 +82,40 @@ resource "azurerm_role_assignment" "acr_pull" {
   role_definition_name             = "AcrPull"                                                       
   principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id    
 }
+# aks_data
 data "azurerm_kubernetes_cluster" "aks_data" {
   name                = azurerm_kubernetes_cluster.aks.name
   resource_group_name = azurerm_kubernetes_cluster.aks.resource_group_name
 }
+# Application Gateway
 data "azurerm_application_gateway" "appgw" {
   name = "${var.project_name}-${var.project_environment}-appgateway"
   resource_group_name = "MC_${var.rg_mezzo}" 
   depends_on = [ azurerm_kubernetes_cluster.aks, azurerm_role_assignment.agic_network_contributor] 
   
 }
-
+# Application Gateway ingress controller network contributor.
 resource "azurerm_role_assignment" "agic_network_contributor" {
   scope                = var.publicsubnet2_id
   role_definition_name = "Network Contributor"
   principal_id         = data.azurerm_kubernetes_cluster.aks_data.ingress_application_gateway[0].ingress_application_gateway_identity[0].object_id
 }
-
+# Application Gateway ingress controller network contributor.
 data "azurerm_public_ip" "appgw_public_ip" {
   name = "${var.project_name}-${var.project_environment}-appgateway-appgwpip"
   resource_group_name = "MC_${var.rg_mezzo}"  
   depends_on = [azurerm_kubernetes_cluster.aks, data.azurerm_application_gateway.appgw]  
   
 }
-
+# kubernetes namespace
 resource "kubernetes_namespace" "api_namespace" {
   depends_on = [azurerm_kubernetes_cluster.aks]
   metadata {
     name = "${var.project_name}-${var.project_environment}"
   }
 }
-
+# key vault access policy for aks
+/*
 resource "azurerm_key_vault_access_policy" "aks" {
   key_vault_id = var.vault_id
 
@@ -128,13 +137,69 @@ resource "azurerm_key_vault_access_policy" "aks" {
       "List"
     ]
 
+}*/
+resource "azurerm_role_assignment" "keyvault" {
+  scope                            = var.vault_id                                                     
+  role_definition_name             = "Key Vault Administrator"                                                      
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id    
+}
+
+data "azurerm_user_assigned_identity" "uami" {
+  name                = "${var.project_name}-${var.project_environment}-aks-cluster-agentpool"
+  resource_group_name = "MC_${var.rg_mezzo}"    
 }
 /*
+resource "azurerm_key_vault_access_policy" "aks_vmss" {
+  key_vault_id = var.vault_id
+
+  tenant_id = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
+  object_id = data.azurerm_user_assigned_identity.uami.principal_id
+
+  secret_permissions           = ["List", "Set", "Get", "Delete", "Purge", "Recover"]           # Permissions for managing secrets
+    certificate_permissions      = ["Create","Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
+
+    key_permissions              = [                                                              # Permissions for managing encryption keys and rotation policies
+      "Create",
+      "Delete",
+      "Get",
+      "Purge",
+      "Recover",
+      "Update",
+      "GetRotationPolicy",
+      "SetRotationPolicy",
+      "List"
+    ]
+
+}
+
+*/
+
+  
+
+/*
+# key vault reader role assignment
 resource azurerm_role_assignment "keyvault_reader" {
   scope                = var.vault_id
   role_definition_name = "Key Vault Secrets User"
   principal_id         = data.azurerm_kubernetes_cluster.aks_data.kubelet_identity[0].object_id
 }*/
+/*
+resource "azurerm_key_vault_access_policy" "uami" {
+  key_vault_id = var.vault_id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = azurerm_user_assigned_identity.uami.principal_id
+
+  secret_permissions = ["List", "Set", "Get", "Delete", "Purge", "Recover"]
+  certificate_permissions = ["Get", "Import"]
+  key_permissions = ["Get"]
+}
+/*
+resource "azurerm_role_assignment" "kv_access" {
+  scope                = var.vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.uami.principal_id
+}*/
+
   
 
 

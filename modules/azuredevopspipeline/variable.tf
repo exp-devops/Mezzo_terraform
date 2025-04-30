@@ -38,46 +38,52 @@ variable "aks_cluster" {
 variable "image_tag" {
   
 }
-
+# GitHub service connection
 variable "github_service_connection" {
   
 }
-
+# Deployment token for admin
 variable "deployment_token_admin" {
   
 }
+# Deployment token for borrower
 variable "deployment_token_borrower" {
   
 }
+# build directory
 variable "build_dir" {
   
 }
+# ACR URL
 variable "acr_url" {
   
 }
+# ACR admin username
 variable "acr_admin_username" {
   
 }
+# ACR admin password
 variable "acr_admin_password" {
   
 }
-
+# AKS API URL
 variable "aks_api_url" {
   
 }
+# ID of resource group where resources are deployed.
 variable "rg_mezzo_id" {
   
 }
+# AKS name.
 variable "aks_cluster_name" {
   
 }
+# Azure Subscription name
 variable "subscription_name" {
   
 }
 
-
 # The Git branch to be used for deployment.
-
 variable "branch_admin" {
   
 }

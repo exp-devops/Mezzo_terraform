@@ -6,15 +6,16 @@ output "acr_id" {
 output "acr_name" {
     value = azurerm_container_registry.container_registry.name
 }
-
+# Output the Azure Container Registry (ACR) admin username.
 output "acr_admin_username" {
   value = azurerm_container_registry.container_registry.admin_username
 }
-
+# Output the Azure Container Registry (ACR) admin password.
 output "acr_admin_password" {
   value     = azurerm_container_registry.container_registry.admin_password
   sensitive = true
 }
+# Output the Azure Container Registry (ACR) acr url.
 output "acr_url" {
   value = azurerm_container_registry.container_registry.login_server
 }

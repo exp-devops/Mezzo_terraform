@@ -17,7 +17,8 @@ resource "azurerm_key_vault" "tf_key_vault" {
   enabled_for_disk_encryption     = true                                                          
   enabled_for_deployment          = true
   enabled_for_template_deployment = true
- /* enable_rbac_authorization       = true */
+  
+  /*enable_rbac_authorization       = true */
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-vault"}         
   )
@@ -42,6 +43,87 @@ resource "azurerm_key_vault" "tf_key_vault" {
       "List"
     ]
   }
+  access_policy {
+    tenant_id = var.aks_tenantid
+    object_id = var.aks_objectid
+
+  secret_permissions           = ["List", "Set", "Get", "Delete", "Purge", "Recover"]           # Permissions for managing secrets
+    certificate_permissions      = ["Create","Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
+
+    key_permissions              = [                                                              # Permissions for managing encryption keys and rotation policies
+      "Create",
+      "Delete",
+      "Get",
+      "Purge",
+      "Recover",
+      "Update",
+      "GetRotationPolicy",
+      "SetRotationPolicy",
+      "List"
+    ]
+
+
+  }
+  access_policy {
+    tenant_id = var.aks_tenantid
+    object_id = var.aks_objectid
+
+  secret_permissions           = ["List", "Set", "Get", "Delete", "Purge", "Recover"]           # Permissions for managing secrets
+    certificate_permissions      = ["Create","Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
+
+    key_permissions              = [                                                              # Permissions for managing encryption keys and rotation policies
+      "Create",
+      "Delete",
+      "Get",
+      "Purge",
+      "Recover",
+      "Update",
+      "GetRotationPolicy",
+      "SetRotationPolicy",
+      "List"
+    ]
+
+
+  }
+access_policy {
+    tenant_id = var.aks_tenantid
+    object_id = var.aks_objectid
+
+  secret_permissions           = ["List", "Set", "Get", "Delete", "Purge", "Recover"]           # Permissions for managing secrets
+    certificate_permissions      = ["Create","Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
+
+    key_permissions              = [                                                              # Permissions for managing encryption keys and rotation policies
+      "Create",
+      "Delete",
+      "Get",
+      "Purge",
+      "Recover",
+      "Update",
+      "GetRotationPolicy",
+      "SetRotationPolicy",
+      "List"
+    ]
+  }
+  access_policy {
+    tenant_id = var.aks_tenantid
+    object_id = var.vmss_uami
+
+  secret_permissions           = ["List", "Set", "Get", "Delete", "Purge", "Recover"]           # Permissions for managing secrets
+    certificate_permissions      = ["Create","Delete", "Get", "List", "Recover", "Purge"]        # Permissions for managing certificates
+
+    key_permissions              = [                                                              # Permissions for managing encryption keys and rotation policies
+      "Create",
+      "Delete",
+      "Get",
+      "Purge",
+      "Recover",
+      "Update",
+      "GetRotationPolicy",
+      "SetRotationPolicy",
+      "List"
+    ]
+  }
+
 
   network_acls {                                                                                  # Network access settings
     bypass                      = "AzureServices"

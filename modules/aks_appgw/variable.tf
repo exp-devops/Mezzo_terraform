@@ -72,9 +72,11 @@ variable "subscription_id" {
 variable "acr_id" {
 
 }
+# ID of the resource group where resources will be deployed
 variable "rg_mezzo_id" {
   
 }
+# ID of the keyvault.
 variable "vault_id" {
   
 }

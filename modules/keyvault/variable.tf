@@ -18,3 +18,15 @@ variable "tags" {
 variable "rg_mezzo" {
   
 }
+variable "aks_secret_identity" {
+  
+}
+variable "vmss_uami" {
+  
+}
+variable "aks_tenantid" {
+  
+}
+variable "aks_objectid" {
+  
+}
