@@ -80,5 +80,13 @@ variable "rg_mezzo_id" {
 variable "vault_id" {
   
 }
+# ID of the log analytics workspace
+variable "log_analytics_workspace" {
+  
+}
+# ID of the application insights
+variable "azure_application_insights_id" {
+  
+}
 
 

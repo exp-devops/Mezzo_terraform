@@ -131,8 +131,8 @@ module "aks_appgw" {
   publicsubnet2_id   = module.vnet.publicsubnet2_id
   rg_mezzo_id        = var.resource_group_id
   vault_id             = module.keyvault.vault_id
-  
-
+  log_analytics_workspace = module.applicationinsights.log_analytics_workspace
+  azure_application_insights_id = module.applicationinsights.azure_application_insights_id
 }
 
 # Modules for Azure DevOps

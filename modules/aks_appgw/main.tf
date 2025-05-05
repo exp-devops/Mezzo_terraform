@@ -16,7 +16,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-aks-cluster"}             
   )
-
+  
 # Default node pool
   default_node_pool {
     name                           = "${var.project_name}${var.project_environment}1"                   # Unique name for the node pool
@@ -33,24 +33,30 @@ resource "azurerm_kubernetes_cluster" "aks" {
     upgrade_settings {
       max_surge                    = "33%"                                                              # Controls the number of nodes upgraded simultaneously
     }
+    
   }
-   
-  
-  identity {
+
+   identity {
     type                           = "SystemAssigned"                                                  # Use system-assigned managed identity for authentication
   }
+  
    /*identity {
     type = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.uami.id]
   }*/
   
-
+  
 
   network_profile {
     network_plugin                 = "azure"                                                           
     network_policy                 = "azure"                                                           
     load_balancer_sku              = "standard"                                                 
   }
+  # Enable OMS Agent to send logs and metrics to Log Analytics
+  oms_agent {
+    log_analytics_workspace_id = var.log_analytics_workspace  # Link to Log Analytics Workspace
+  }
+  
 
   key_vault_secrets_provider {
     secret_rotation_enabled        = true                                                             # Enables automatic rotation of secrets stored in Azure Key Vault
@@ -65,9 +71,22 @@ resource "azurerm_kubernetes_cluster" "aks" {
     
     gateway_name = "${var.project_name}-${var.project_environment}-appgateway"
     subnet_id  = var.publicsubnet2_id
-    
-  
+     
 }
+
+}
+
+resource "azurerm_role_assignment" "aks_log_analytics_reader" {
+  scope                            = var.log_analytics_workspace
+  role_definition_name             = "Log Analytics Reader"  # Ensures AKS can access log data
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id    
+}
+
+# Assign AKS permission to access Application Insights
+resource "azurerm_role_assignment" "aks_application_insights_reader" {
+  scope                            = var.azure_application_insights_id
+  role_definition_name             = "Monitoring Reader"  # Ensures AKS can access Application Insights telemetry
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
 }
 # Node resource group
 data "azurerm_resource_group" "node_resource_group_mezzo" {

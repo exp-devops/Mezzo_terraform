@@ -17,3 +17,7 @@ output "azure_application_insights_name" {
 output "log_analytics_workspace" {
     value = azurerm_log_analytics_workspace.log_analytics_workspace.id  
 }
+output "azure_application_insights_id" {
+  value = azurerm_application_insights.application_insights.id
+  
+}

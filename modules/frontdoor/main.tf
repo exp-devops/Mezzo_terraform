@@ -10,6 +10,7 @@ name                      = "${var.project_name}${var.project_environment}wafpol
 resource_group_name       = var.rg_mezzo
 sku_name                  = "Standard_AzureFrontDoor"
 mode                      = "Prevention"
+
 /* managed_rule {
     type    = "DefaultRuleSet"
     version = "1.0"
@@ -28,9 +29,10 @@ custom_rule {
       match_variable               = "RemoteAddr"
       operator                     = "IPMatch"
       negation_condition           = false
-      match_values                 = ["192.168.1.0/24", "10.0.1.0/24"]
+      match_values                 = ["10.0.1.0/24", "10.0.0.0/24"]
     }
   }
+  
   tags = merge(
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-waf-policy"}
   )
