@@ -4,18 +4,14 @@ locals {
 }
 
 
-# WAF policy
+# WAF policyy
 resource "azurerm_cdn_frontdoor_firewall_policy" "waf_policy" {
 name                      = "${var.project_name}${var.project_environment}wafpolicy"
 resource_group_name       = var.rg_mezzo
 sku_name                  = "Standard_AzureFrontDoor"
 mode                      = "Prevention"
 
-/* managed_rule {
-    type    = "DefaultRuleSet"
-    version = "1.0"
-    action = "Block"
-}*/
+
 custom_rule {
     name                           = "Rule1"
     enabled                        = true
