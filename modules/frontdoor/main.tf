@@ -20,7 +20,6 @@ custom_rule {
     rate_limit_threshold           = 10
     type                           = "MatchRule"
     action                         = "Block"
-
     match_condition {
       match_variable               = "RemoteAddr"
       operator                     = "IPMatch"
