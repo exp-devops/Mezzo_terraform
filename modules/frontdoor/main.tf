@@ -4,7 +4,7 @@ locals {
 }
 
 
-# WAF policyy
+# WAF policy
 resource "azurerm_cdn_frontdoor_firewall_policy" "waf_policy" {
 name                      = "${var.project_name}${var.project_environment}wafpolicy"
 resource_group_name       = var.rg_mezzo
