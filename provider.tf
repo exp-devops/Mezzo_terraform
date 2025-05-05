@@ -12,7 +12,7 @@ terraform {
     azuredevops = {
       source  = "microsoft/azuredevops"
       version = "~> 1.4.0"  
-    }
+    } 
   }
 
   # Define the remote backend for storing Terraform state in Azure.
