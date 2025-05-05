@@ -8,11 +8,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.90"  
     }
-    azapi = {
-      source  = "azure/azapi"
-      version = "~> 1.12" # compatible with VMSS resource querying
-    }
-
     # Define the Azure DevOps provider for managing DevOps resources.
     azuredevops = {
       source  = "microsoft/azuredevops"
@@ -48,6 +43,3 @@ provider "azuredevops" {
   personal_access_token = var.azure_devops_pat 
 }
 
-provider "azapi" {
-  # No config needed if you're using Azure CLI or service principal
-}

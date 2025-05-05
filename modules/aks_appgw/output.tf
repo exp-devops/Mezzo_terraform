@@ -22,17 +22,7 @@ output "host" {
   value       = azurerm_kubernetes_cluster.aks.kube_config.0.host
   sensitive   = true
 }
-# Output application gateway Public IP.
-/*
-output "appgw_public_ip" {
-    value     = azurerm_public_ip.appgw_pip.ip_address
-  
-}
-# Output application gateway Name.
-output "appgw_name" {
-    value = azurerm_application_gateway.appgw.name
-  
-}*/
+
 # Output of Kubernetes cluster name.
 output "aks_cluster_name" {
     value = azurerm_kubernetes_cluster.aks.name
@@ -47,15 +37,19 @@ output "appgw_ip" {
   value = data.azurerm_public_ip.appgw_public_ip.ip_address
   
 }
+# Output of aks secret identity
 output "aks_secret_identity" {
   value = data.azurerm_kubernetes_cluster.aks_data.key_vault_secrets_provider[0].secret_identity[0].object_id
 }
+# Output of aks tenant ID
 output "aks_tenantid" {
   value = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
 }
+# Output of aks object ID
 output "aks_objectid" {
   value = azurerm_kubernetes_cluster.aks.identity[0].principal_id
 }
+# Output of vmss_uami principal ID
 output "vmss_uami" {
   value = data.azurerm_user_assigned_identity.uami.principal_id
   

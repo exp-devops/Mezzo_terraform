@@ -57,16 +57,6 @@ variable "nodepool1-mincount" {
 variable "nodepool1-maxcount" {
 
 }
-/*
-# Azure Active Directory (AAD) tenant ID for authentication
-variable "tenant_id" {
-
-}
-
-# Azure subscription ID where the infrastructure will be deployed
-variable "subscription_id" {
-
-}*/
 
 # Azure Container Registry (ACR) ID for storing container images
 variable "acr_id" {

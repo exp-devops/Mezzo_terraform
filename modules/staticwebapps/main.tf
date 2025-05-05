@@ -17,12 +17,6 @@ resource "azurerm_static_web_app" "tf_admin_webapp" {
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-admin-static-web-app"}   
   )
 }
-/*
-resource "azurerm_static_site_custom_domain" "tf-custom-domain_admin" {
-  static_site_id  = azurerm_static_web_app.tf_admin_webapp.id
-  domain_name     = "mezzo-admin.experionglobal.dev"
-  validation_type = "cname-delegation"
-}*/
 
 # Azure Static Web App-Borrower
 resource "azurerm_static_web_app" "tf_borrower_webapp" {
@@ -39,12 +33,6 @@ resource "azurerm_static_web_app" "tf_borrower_webapp" {
     local.common_tags, {"Name"="${var.project_name}-${var.project_environment}-borrower-static-web-app"}  
   )
 }
-/*
-resource "azurerm_static_site_custom_domain" "tf-custom-domain_borrower" {
-  static_site_id  = azurerm_static_web_app.tf_borrower_webapp.id
-  domain_name     = "mezzo-borrower.experionglobal.dev"
-  validation_type = "cname-delegation"
-}*/
 
 
 

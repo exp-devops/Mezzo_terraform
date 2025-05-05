@@ -36,8 +36,6 @@ static_web_app_sku_tier = "Standard"
 
 workspace_sku = "PerGB2018"
 retention_in_days = 30
-#tenant_id          = "05cb6afc-e5de-470e-ad06-4a5b08adfcd8"
-#subscription_id = "ef370afa-d8de-4af2-a91d-7be5a40ab513"
 
 #------------------- Azure pipeline-----------------
 azure_devops_pat = "3lj74aLgsdyuNtZAF3VC2x3JxMijsjcax3S92VoqYpOs9MUaKBQHJQQJ99BDACAAAAAHIKsPAAASAZDOl74C"
@@ -45,7 +43,6 @@ azure_devops_pat = "3lj74aLgsdyuNtZAF3VC2x3JxMijsjcax3S92VoqYpOs9MUaKBQHJQQJ99BD
 image_name = "core-service"
   
 image_tag = "latest"
-#branch = "Nirupama-Suresh-patch-3"
   
 azure_devops_project_name = "CNB"
 github_service_connection = "6ad1ec3c-d90f-420c-b4dc-73147d178394"

@@ -18,15 +18,19 @@ variable "tags" {
 variable "rg_mezzo" {
   
 }
+# AKS secret identity
 variable "aks_secret_identity" {
   
 }
+# VMSS user assigned managed identity
 variable "vmss_uami" {
   
 }
+# AKS tenant ID
 variable "aks_tenantid" {
   
 }
+# AKS object ID
 variable "aks_objectid" {
   
 }

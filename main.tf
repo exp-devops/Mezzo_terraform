@@ -1,11 +1,3 @@
-# Modules for Resource Group
-/*module "rg" {
-  source               = "./modules/rg"
-  project_name         = var.project_name
-  project_environment  = var.project_environment
-  location             = var.location
-  tags                 = var.tags
-}*/
 
 # Modules for Virtual Network
 module "vnet" {
@@ -93,23 +85,14 @@ module "frontdoor"{
   location            = var.location
   rg_mezzo            = var.resource_group_name
   tags                = var.tags 
- appgw_ip            = module.aks_appgw.appgw_ip
+  appgw_ip            = module.aks_appgw.appgw_ip
   static_web_app_url_admin    = module.staticwebapps.static_web_app_url_admin
   static_web_app_url_borrower = module.staticwebapps.static_web_app_url_borrower
-  host_name_admin = var.host_name_admin
-  host_name_borrower = var.host_name_borrower
-  host_name_api = var.host_name_api
+  host_name_admin             = var.host_name_admin
+  host_name_borrower          = var.host_name_borrower
+  host_name_api               = var.host_name_api
 }
-# Modules for Elastic Search
-module "elasticsearch" {
 
-  source             = "./modules/elasticsearch"
-  project_name       = var.project_name
-  project_environment= var.project_environment
-  location           = var.location
-  rg_mezzo           = var.resource_group_name
-  tags               = var.tags
-}
 
 # Modules for Application gateway and AKS
 module "aks_appgw" {
@@ -125,13 +108,11 @@ module "aks_appgw" {
   kubernetes_version = var.kubernetes_version
   vm_size            = var.vm_size
   aks_sku_tier       = var.aks_sku_tier
-  /*tenant_id          = module.keyvault.keyvault_tenant_id
-  subscription_id    = module.keyvault.keyvault_subscription_id*/
   publicsubnet1_id   = module.vnet.publicsubnet1_id
   publicsubnet2_id   = module.vnet.publicsubnet2_id
   rg_mezzo_id        = var.resource_group_id
-  vault_id             = module.keyvault.vault_id
-  log_analytics_workspace = module.applicationinsights.log_analytics_workspace
+  vault_id           = module.keyvault.vault_id
+  log_analytics_workspace       = module.applicationinsights.log_analytics_workspace
   azure_application_insights_id = module.applicationinsights.azure_application_insights_id
 }
 
@@ -148,17 +129,17 @@ module "azuredevopspipeline"{
   acr_name           = module.acr.acr_name
   aks_cluster        = module.aks_appgw.aks_cluster_name
   image_name         =  var.image_name
-  image_tag          = var.image_tag
-  github_service_connection =var.github_service_connection
-  deployment_token_admin   = module.staticwebapps.static_web_app_deployment_token_admin
-  deployment_token_borrower   = module.staticwebapps.static_web_app_deployment_token_borrower
+  image_tag          = var.image_tag  
   build_dir          = var.build_dir
   aks_api_url        = module.aks_appgw.aks_api_url
   aks_cluster_name   = module.aks_appgw.aks_cluster_name
   rg_mezzo_id        = var.resource_group_id
   subscription_name  =var.subscription_name
-  branch_admin = var.branch_admin
-  branch_borrower = var.branch_borrower
-  branch_api = var.branch_api
+  branch_admin       = var.branch_admin
+  branch_borrower    = var.branch_borrower
+  branch_api         = var.branch_api
+  github_service_connection = var.github_service_connection
+  deployment_token_admin    = module.staticwebapps.static_web_app_deployment_token_admin
+  deployment_token_borrower = module.staticwebapps.static_web_app_deployment_token_borrower
   
 }
